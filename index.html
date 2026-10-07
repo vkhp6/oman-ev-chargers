@@ -271,7 +271,8 @@
             popupAnchor: [0, -30] 
         });
 
-        function addCharger(name, lat, lng, power, plugType, status, description, gmapsLink) {
+        // دالة إضافة المحطة (بدون عرض الحالة)
+        function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
             marker.on('click', function() {
@@ -293,8 +294,7 @@
                             ${description}
                         </div>
 
-                        <div style="margin-bottom: 4px; font-size: 14px;"><strong>المنفذ:</strong> ${plugType}</div>
-                        <div style="margin-bottom: 15px; font-size: 14px;"><strong>الحالة:</strong> ${status}</div>
+                        <div style="margin-bottom: 15px; font-size: 14px;"><strong>المنفذ:</strong> ${plugType}</div>
                         
                         <div style="display: inline-block; background: #ffaa00; color: #000; padding: 5px 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px;">
                             ⚡ ${power} kW
@@ -319,7 +319,6 @@
             23.622844, 58.507355, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "وجهة شحن متكاملة تضمن لك راحة تامة أثناء انتظارك (تتضمن <strong>منفذين للشحن السريع</strong>). استمتع بقهوتك المفضلة من <strong>55 Coffee</strong> أو تذوق كوباً من <strong>تشاي</strong> المميز. تتوفر بالمحطة دورات مياه نظيفة لخدمتك، كما يقع المسجد على بُعد دقيقتين فقط بالسيارة.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -330,7 +329,6 @@
             23.584534, 58.198266, 
             50, 
             "CCS2 (منفذ واحد)", 
-            "🟢 متاحة",
             "محطة متكاملة ومريحة تلبي احتياجاتك أثناء الشحن (تتضمن <strong>منفذاً واحداً للشحن</strong>). تتضمن <strong>مقهى</strong> مميزاً، <strong>سوبرماركت</strong> لتسوق احتياجاتك، بالإضافة إلى توفر <strong>مصلى</strong> ودورات مياه نظيفة.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -341,7 +339,6 @@
             23.632180, 58.054017, 
             200, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن فائقة السرعة تمنحك طاقة قصيرة ومريحة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>كوفي</strong> أنيق، <strong>مطعم</strong> وجبات، و<strong>سوبرماركت</strong> متكامل لتلبية كافة احتياجاتك.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -352,7 +349,6 @@
             23.711551, 57.241478, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة متكاملة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مصلى</strong>، <strong>مقهى</strong>، و<strong>سوبرماركت</strong> لتلبية كافة احتياجاتك أثناء الانتظار.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -363,7 +359,6 @@
             23.709153, 57.239824, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة متكاملة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مصلى</strong>، <strong>مقهى</strong>، و<strong>سوبرماركت</strong> لتلبية كافة احتياجاتك أثناء الانتظار.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -374,7 +369,6 @@
             24.414492, 56.599671, 
             120, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مقهى</strong> و<strong>سوبرماركت</strong> لخدمتك.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -385,7 +379,6 @@
             24.501530, 56.504854, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>سوبرماركت</strong>، <strong>مصلى</strong>، و<strong>دورات مياه</strong>.",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -396,7 +389,6 @@
             24.344938, 56.729517, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة تابعة لنماء للكهرباء (تتضمن <strong>منفذين للشحن</strong>).",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
@@ -407,7 +399,6 @@
             23.584899, 58.324200, 
             180, 
             "CCS2 (منفذين)", 
-            "🟢 متاحة",
             "محطة شحن سريعة تابعة لنماء للكهرباء (تتضمن <strong>منفذين للشحن</strong>).",
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
