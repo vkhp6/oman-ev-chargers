@@ -25,7 +25,12 @@
             z-index: 1;
         }
 
-        /* شاشة الترحيب الاحترافية مع تأثير التغبيش (Blur) */
+        /* إخفاء شريط حقوق النشر السفلي */
+        .leaflet-control-attribution {
+            display: none !important;
+        }
+
+        /* شاشة الترحيب */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -45,11 +50,10 @@
             box-sizing: border-box;
         }
 
-        /* محتوى شاشة الترحيب */
         .splash-content {
             text-align: center;
             max-width: 450px;
-            background: rgba(30, 30, 30, 0.8);
+            background: rgba(30, 30, 30, 0.9);
             border: 1px solid #00e5ff;
             border-radius: 20px;
             padding: 30px;
@@ -77,7 +81,6 @@
             text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
         }
 
-        /* تنسيق الملاحظة التنبيهية */
         .splash-notice {
             font-size: 13px;
             color: #dcdcdc;
@@ -90,7 +93,6 @@
             border-right: 4px solid #ffaa00;
         }
 
-        /* زر تخطي الملاحظة (تمام !) */
         .splash-btn {
             background-color: #00e5ff;
             color: #121212;
@@ -108,10 +110,221 @@
         .splash-btn:hover {
             background-color: #ffaa00;
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 170, 0, 0.6);
         }
 
-        /* زر العودة للموقع الحالي */
+        /* ويدجت الطقس التفاعلي حسب الموقع */
+        .weather-widget {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(18, 18, 18, 0.9);
+            border: 2px solid #ffaa00;
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* الأزرار العلوية */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background: rgba(18, 18, 18, 0.9);
+            border: 2px solid #00e5ff;
+            color: #00e5ff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #00e5ff;
+            color: #121212;
+        }
+
+        /* النوافذ المنبثقة العامة (Modals) */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: rgba(25, 25, 25, 0.95);
+            border: 2px solid #ffaa00;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            padding: 25px;
+            text-align: right;
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.4);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            color: #ffaa00;
+            margin-top: 0;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #00e5ff;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .tariff-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-right: 4px solid #00e5ff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            background-color: #00e5ff;
+            color: #121212;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .modal-btn:hover {
+            background-color: #ffaa00;
+        }
+
+        /* القائمة الجانبية للمحطات */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 320px;
+            height: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #333;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            color: #00e5ff;
+            font-size: 18px;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar-list {
+            overflow-y: auto;
+            padding: 15px;
+            flex: 1;
+        }
+
+        .sidebar-item {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sidebar-item:hover {
+            border-color: #00e5ff;
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .sidebar-item-title {
+            font-weight: bold;
+            color: #00e5ff;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-item-desc {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        /* زر الموقع الحالي */
         .locate-btn {
             position: absolute;
             bottom: 30px;
@@ -138,7 +351,7 @@
             transform: scale(1.1);
         }
 
-        /* تصميم نافذة التفاصيل */
+        /* تفاصيل النوافذ المنبثقة */
         .leaflet-popup-content-wrapper, .leaflet-popup-tip {
             background-color: rgba(30, 30, 30, 0.95) !important;
             color: #fff !important;
@@ -147,7 +360,41 @@
             backdrop-filter: blur(5px);
         }
 
-        /* تصميم النقطة الاحترافية لموقع المستخدم */
+        .action-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-link, .btn-share {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-link {
+            background-color: #00e5ff;
+            color: #000;
+        }
+
+        .btn-share {
+            background-color: #333;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+        }
+        .btn-share:hover {
+            background-color: #00e5ff;
+            color: #000;
+        }
+
+        /* نقطة موقع المستخدم */
         .user-pulse-container {
             position: relative;
             width: 30px;
@@ -196,11 +443,100 @@
             <div class="splash-notice">
                 ⚠️ <strong>ملاحظة هامة:</strong><br>
                 • الموقع لا زال قيد الإنشاء ولم تضف جميع المحطات بعد.<br>
-                • تفاصيل محطات الشحن هي حسب ما هو معلن.<br>
+                • تفاصيل محطات الشحن حسب ما هو معلن.<br>
                 • ربما تصل إلى المحطة وتجدها لا تعمل لأسباب صيانة أو عطل مفاجئ.<br>
-                • هذا الموقع وُجد لمساعدتك على معرفة مواقع الشواحن فقط لا غير.
+                • هذا الموقع وُجد لمساعدتك على معرفة مواقع الشواحن فقط لا غير.<br><br>
+                <span style="color: #00e5ff; font-weight: bold; display: block; text-align: center;">تصميم وبرمجة الموقع بواسطة الأزهر</span>
             </div>
             <button class="splash-btn" onclick="closeSplash()">تمام !</button>
+        </div>
+    </div>
+
+    <!-- نافذة خط الرحلة الذكي (Trip Planner Modal) -->
+    <div id="trip-modal" class="custom-modal">
+        <div class="modal-content">
+            <h2>🧭 حاسبة خط الرحلة الذكية</h2>
+            <div style="font-size: 12px; color: #bbb; margin-bottom: 15px; text-align: center;">
+                نقطة الانطلاق: <b>موقعك الحالي (GPS)</b><br>اكتب وجهتك وحدد بطاريتك لمعرفة المسافة ومحطة التوقف المناسبة!
+            </div>
+            
+            <div class="form-group">
+                <label>إلى (اكتب وجهتك هنا):</label>
+                <input type="text" id="trip-destination-input" placeholder="مثال: صلالة، صحار، نزوى، عبري..." />
+            </div>
+
+            <div class="form-group">
+                <label>نوع السيارة (المدى التقريبي):</label>
+                <select id="trip-car-range">
+                    <option value="300">بطارية صغيرة (~300 كم)</option>
+                    <option value="400" selected>تسلا / سيارة متوسطة (~400 كم)</option>
+                    <option value="550">سيارة بمدى طويل جداً (~550 كم)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>نسبة البطارية الحالية:</label>
+                <select id="trip-battery">
+                    <option value="100">100% (ممتلئة)</option>
+                    <option value="80">80%</option>
+                    <option value="50" selected>50% (متوسطة)</option>
+                    <option value="30">30% (منخفضة)</option>
+                    <option value="20">20% (حرجة)</option>
+                </select>
+            </div>
+
+            <button class="modal-btn" onclick="calculateCustomTrip()">احسب المسافة وتعرف على المحطة 🚀</button>
+            
+            <div id="trip-result" style="margin-top: 15px; font-size: 13px; line-height: 1.6; text-align: right;"></div>
+
+            <button class="modal-btn" style="background: #333; color: #fff; margin-top: 10px;" onclick="toggleTripModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة تعرفة الشحن الرسمية (Modal) -->
+    <div id="tariff-modal" class="custom-modal">
+        <div class="modal-content">
+            <h2>⚡ تعرفة الشحن الرسمية</h2>
+            <div style="font-size: 12px; color: #bbb; margin-bottom: 15px; text-align: center;">
+                رسوم شحن المركبات الكهربائية في سلطنة عمان
+            </div>
+            <div class="tariff-item">
+                🟢 <b>50 بيسة</b> لكل كيلوواط/ساعة<br>
+                <span style="color: #00e5ff; font-size: 11px;">للشواحن التي تبلغ قدرتها 90 كيلوواط فأقل.</span>
+            </div>
+            <div class="tariff-item">
+                🟡 <b>90 بيسة</b> لكل كيلوواط/ساعة<br>
+                <span style="color: #00e5ff; font-size: 11px;">للشواحن التي تتراوح قدرتها بين 91 وحتى 180 كيلوواط.</span>
+            </div>
+            <div class="tariff-item">
+                🔴 <b>120 بيسة</b> لكل كيلوواط/ساعة<br>
+                <span style="color: #00e5ff; font-size: 11px;">للشواحن التي تبلغ قدرتها 181 كيلوواط فأكثر.</span>
+            </div>
+            <button class="modal-btn" onclick="toggleTariffModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- ويدجت الطقس التفاعلي حسب الموقع -->
+    <div id="weather-widget" class="weather-widget">
+        <span>🌤️ جاري تحديد الطقس...</span>
+    </div>
+
+    <!-- الأزرار العلوية -->
+    <div class="top-controls">
+        <button class="control-btn" onclick="toggleTripModal()">🧭 خط الرحلة</button>
+        <button class="control-btn" onclick="toggleTariffModal()">💰 التعرفة</button>
+        <button class="control-btn" onclick="toggleSidebar()">📋 المحطات</button>
+        <button class="control-btn" onclick="toggleFullscreen()">⛶ الشاشة</button>
+    </div>
+
+    <!-- القائمة الجانبية للمحطات -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>قائمة المحطات</h3>
+            <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
+        </div>
+        <div id="sidebar-list" class="sidebar-list">
+            <!-- ستتم تعبئتها تلقائياً -->
         </div>
     </div>
 
@@ -213,24 +549,120 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // دالة إغلاق شاشة الترحيب عند الضغط على "تمام !"
         function closeSplash() {
             var splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
             splash.style.visibility = 'hidden';
         }
 
-        var map = L.map('map', {
-            zoomControl: false 
-        }).setView([21.4735, 55.9754], 6);
+        function toggleTripModal() {
+            var modal = document.getElementById('trip-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
 
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri',
+        function toggleTariffModal() {
+            var modal = document.getElementById('tariff-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // إحداثيات تقريبية لمدن ومناطق سلطنة عمان للتعرف على الوجهة المكتوبة
+        var knownDestinations = {
+            "صلالة": [17.0151, 54.0924],
+            "صحار": [24.3642, 56.7466],
+            "نزوى": [22.9333, 57.5333],
+            "عبري": [23.2257, 56.5143],
+            "البريمي": [24.2500, 55.7933],
+            "صور": [22.5667, 59.5289],
+            "الدوحة": [20.6667, 57.7833],
+            "الدقم": [19.6649, 57.7214],
+            "بركاء": [23.7091, 57.8872],
+            "الرستاق": [23.3908, 57.4244],
+            "إبراء": [22.6905, 58.5323]
+        };
+
+        // حساب الرحلة بناءً على كتابة الوجهة الحرة وموقع الـ GPS الحالي
+        function calculateCustomTrip() {
+            var resultDiv = document.getElementById('trip-result');
+
+            if (!userLocation) {
+                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى السماح بتحديد الموقع (GPS) أولاً لكي نعرف نقطة الانطلاق!</span>`;
+                return;
+            }
+
+            var destInput = document.getElementById('trip-destination-input').value.trim();
+            if (!destInput) {
+                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى كتابة اسم الوجهة (مثل: صلالة، صحار، نزوى...)</span>`;
+                return;
+            }
+
+            var maxRange = parseFloat(document.getElementById('trip-car-range').value);
+            var batteryPercent = parseFloat(document.getElementById('trip-battery').value);
+
+            // البحث الذكي عن الإحداثيات بناءً على النص المدخل أو تقدير المسافة
+            var destLatlng = null;
+            for (var key in knownDestinations) {
+                if (destInput.includes(key) || key.includes(destInput)) {
+                    destLatlng = L.latLng(knownDestinations[key]);
+                    break;
+                }
+            }
+
+            var distanceInKm = 0;
+            if (destLatlng) {
+                var distanceInMeters = userLocation.distanceTo(destLatlng);
+                distanceInKm = Math.round(distanceInMeters / 1000);
+            } else {
+                // إذا كانت الوجهة غير مدرجة بقاموس الإحداثيات السريع، نقدر مسافة افتراضية متوسطة للرحلات الطويلة
+                distanceInKm = 350; 
+            }
+
+            // المدى الحالي للسيارة بناءً على النسبة
+            var currentRange = maxRange * (batteryPercent / 100);
+
+            let html = `<div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; border-right: 3px solid #00e5ff;">`;
+            html += `📍 الوجهة المكتوبة: <b>${destInput}</b> (~${distanceInKm} كم)<br>`;
+            html += `🔋 المدى الحالي المتبقي ببطاريتك: <b>حوالي ${Math.round(currentRange)} كم</b><br><br>`;
+
+            if (currentRange >= distanceInKm) {
+                html += `<span style="color: #00ffaa; font-weight: bold;">✅ ممتاز! بطاريتك تكفي تماماً للوصول إلى ${destInput} دون الحاجة للتوقف.</span>`;
+            } else {
+                html += `<span style="color: #ffaa00; font-weight: bold;">⚠️ تنبيه: المدى لا يكفي للوصول! أنت مضطر للتوقف للشحن في طريقك إلى ${destInput}.</span><br><br>`;
+                
+                // البحث عن أقرب محطة شحن على الخريطة لتكون نقطة التوقف المقترحة
+                var nearestStation = null;
+                var minDistance = Infinity;
+
+                stationsData.forEach(function(station) {
+                    var stationLatLng = L.latLng(station.lat, station.lng);
+                    var distToStation = userLocation.distanceTo(stationLatLng);
+                    if (distToStation < minDistance) {
+                        minDistance = distToStation;
+                        nearestStation = station;
+                    }
+                });
+
+                if (nearestStation) {
+                    var stationKm = (minDistance / 1000).toFixed(1);
+                    html += `💡 <b>محطة التوقف المقترحة في طريقك:</b><br>`;
+                    html += `• <b>${nearestStation.name}</b> (تبعد عنك ${stationKm} كم - بقوة ${nearestStation.power} kW)`;
+                } else {
+                    html += `💡 يرجى تفقد القائمة الجانبية لاختيار محطة شحن مناسبة.`;
+                }
+            }
+            html += `</div>`;
+
+            resultDiv.innerHTML = html;
+        }
+
+        var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
+
+        var baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 18
         }).addTo(map);
 
         var userLocation = null;
         var userMarker = null;
+        var stationsData = [];
 
         var userIcon = L.divIcon({
             html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
@@ -238,6 +670,21 @@
             iconSize: [30, 30],
             iconAnchor: [15, 15]
         });
+
+        function fetchWeather(lat, lng) {
+            var url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.current_weather) {
+                        var temp = Math.round(data.current_weather.temperature);
+                        document.getElementById('weather-widget').innerHTML = `<span>🌡️ درجة الحرارة: ${temp}°م</span>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
+                });
+        }
 
         function panToUser() {
             if (userLocation) {
@@ -252,15 +699,19 @@
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;
                 userLocation = L.latLng(lat, lng);
-
+                
                 userMarker = L.marker(userLocation, {icon: userIcon}).addTo(map)
-                    .bindPopup('<div dir="rtl" style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
-
+                    .bindPopup('<div style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
+                
                 map.flyTo(userLocation, 13, { animate: true, duration: 2 });
+                fetchWeather(lat, lng);
 
-            }, function(error) {
-                console.log("تم رفض إذن تحديد الموقع أو حدث خطأ.");
+            }, function(error) { 
+                console.log("Geolocation error");
+                document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
             }, { enableHighAccuracy: true });
+        } else {
+            document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
         }
 
         var fastChargerIcon = L.divIcon({
@@ -271,8 +722,39 @@
             popupAnchor: [0, -30] 
         });
 
-        // دالة إضافة المحطة محسنة ومعدلة لتفتح التفاصيل وتغلقها بشكل متكرر دون مشاكل
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert("عذراً، ميزة ملء الشاشة غير مدعومة في متصفحك.");
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.shareStation = function(name, link) {
+            if (navigator.share) {
+                navigator.share({
+                    title: name,
+                    text: `شاهد محطة الشحن: ${name}`,
+                    url: link
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(link);
+                alert("تم نسخ رابط المحطة للحافظة!");
+            }
+        };
+
         function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
+            stationsData.push({name, lat, lng, power, plugType, description, gmapsLink});
+
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
             marker.on('click', function() {
@@ -287,22 +769,18 @@
                 var popupContent = `
                     <div dir="rtl" style="text-align: right; min-width: 230px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                         <div style="font-size: 18px; font-weight: bold; color: #00e5ff; margin-bottom: 5px;">${name}</div>
-                        
                         ${distanceText}
+                        <div style="font-size: 13px; color: #dcdcdc; margin-bottom: 10px; line-height: 1.5;">${description}</div>
+                        <div style="margin-bottom: 8px; font-size: 13px;"><strong>المنفذ:</strong> ${plugType}</div>
                         
-                        <div style="font-size: 13px; color: #dcdcdc; margin-bottom: 12px; line-height: 1.6;">
-                            ${description}
-                        </div>
-
-                        <div style="margin-bottom: 15px; font-size: 14px;"><strong>المنفذ:</strong> ${plugType}</div>
-                        
-                        <div style="display: inline-block; background: #ffaa00; color: #000; padding: 5px 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px;">
+                        <div style="display: inline-block; background: #ffaa00; color: #000; padding: 4px 10px; border-radius: 8px; font-weight: bold; font-size: 13px; margin-bottom: 5px;">
                             ⚡ ${power} kW
                         </div>
-                        
-                        <a href="${gmapsLink}" target="_blank" style="display: block; width: 90%; margin: 0 auto; padding: 10px; background-color: #00e5ff; color: #000; text-align: center; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s;">
-                            🚗 انطلق الآن
-                        </a>
+
+                        <div class="action-row">
+                            <button class="btn-share" onclick="shareStation('${name}', '${gmapsLink}')">مشاركة 🔗</button>
+                            <a href="${gmapsLink}" target="_blank" class="btn-link">انطلق 🚗</a>
+                        </div>
                     </div>
                 `;
                 
@@ -311,99 +789,39 @@
             });
         }
 
+        function populateSidebar() {
+            var listContainer = document.getElementById('sidebar-list');
+            listContainer.innerHTML = '';
+            
+            stationsData.forEach(function(station, index) {
+                var item = document.createElement('div');
+                item.className = 'sidebar-item';
+                item.innerHTML = `
+                    <div class="sidebar-item-title">${station.name} (${station.power} kW)</div>
+                    <div class="sidebar-item-desc">${station.description.substring(0, 50)}...</div>
+                `;
+                item.onclick = function() {
+                    map.flyTo([station.lat, station.lng], 15, { animate: true, duration: 1.5 });
+                    toggleSidebar();
+                };
+                listContainer.appendChild(item);
+            });
+        }
+
         // ==========================================
-        // منطقة إضافة المحطات
+        // منطقة إضافة المحطات (9 محطات)
         // ==========================================
+        addCharger("محطة EVO (نفط عُمان)", 23.622844, 58.507355, 180, "CCS2 (منفذين)", "وجهة شحن متكاملة (تتضمن منفذين). تتوفر قهوة 55 Coffee ومرافق.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة Shell", 23.584534, 58.198266, 50, "CCS2 (منفذ واحد)", "محطة متكاملة تتضمن مقهى، سوبرماركت، ومصلى ودورات مياه.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة Shell الفائقة", 23.632180, 58.054017, 200, "CCS2 (منفذين)", "محطة شحن فائقة السرعة تتضمن كوفي، مطعم، وسوبرماركت.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة Shell", 23.711551, 57.241478, 180, "CCS2 (منفذين)", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة Shell", 23.709153, 57.239824, 180, "CCS2 (منفذين)", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة EVO", 24.414492, 56.599671, 120, "CCS2 (منفذين)", "محطة شحن سريعة تتضمن مقهى وسوبرماركت.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة Shell", 24.501530, 56.504854, 180, "CCS2 (منفذين)", "محطة شحن سريعة تتضمن سوبرماركت، مصلى ودورات مياه.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة نماء للكهرباء", 24.344938, 56.729517, 180, "CCS2 (منفذين)", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة نماء للكهرباء", 23.584899, 58.324200, 180, "CCS2 (منفذين)", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
 
-        // 1. محطة EVO (نفط عُمان)
-        addCharger(
-            "محطة EVO (نفط عُمان)", 
-            23.622844, 58.507355, 
-            180, 
-            "CCS2 (منفذين)", 
-            "وجهة شحن متكاملة تضمن لك راحة تامة أثناء انتظارك (تتضمن <strong>منفذين للشحن السريع</strong>). استمتع بقهوتك المفضلة من <strong>55 Coffee</strong> أو تذوق كوباً من <strong>تشاي</strong> المميز. تتوفر بالمحطة دورات مياه نظيفة لخدمتك، كما يقع المسجد على بُعد دقيقتين فقط بالسيارة.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 2. محطة Shell الأولى
-        addCharger(
-            "محطة Shell", 
-            23.584534, 58.198266, 
-            50, 
-            "CCS2 (منفذ واحد)", 
-            "محطة متكاملة ومريحة تلبي احتياجاتك أثناء الشحن (تتضمن <strong>منفذاً واحداً للشحن</strong>). تتضمن <strong>مقهى</strong> مميزاً، <strong>سوبرماركت</strong> لتسوق احتياجاتك، بالإضافة إلى توفر <strong>مصلى</strong> ودورات مياه نظيفة.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 3. محطة Shell الفائقة الجديدة
-        addCharger(
-            "محطة Shell الفائقة", 
-            23.632180, 58.054017, 
-            200, 
-            "CCS2 (منفذين)", 
-            "محطة شحن فائقة السرعة تمنحك طاقة قصيرة ومريحة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>كوفي</strong> أنيق، <strong>مطعم</strong> وجبات، و<strong>سوبرماركت</strong> متكامل لتلبية كافة احتياجاتك.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 4. محطة Shell 
-        addCharger(
-            "محطة Shell", 
-            23.711551, 57.241478, 
-            180, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة متكاملة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مصلى</strong>، <strong>مقهى</strong>، و<strong>سوبرماركت</strong> لتلبية كافة احتياجاتك أثناء الانتظار.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 5. محطة Shell 
-        addCharger(
-            "محطة Shell", 
-            23.709153, 57.239824, 
-            180, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة متكاملة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مصلى</strong>، <strong>مقهى</strong>، و<strong>سوبرماركت</strong> لتلبية كافة احتياجاتك أثناء الانتظار.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 6. محطة EVO الجديدة
-        addCharger(
-            "محطة EVO", 
-            24.414492, 56.599671, 
-            120, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>مقهى</strong> و<strong>سوبرماركت</strong> لخدمتك.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 7. محطة Shell الجديدة
-        addCharger(
-            "محطة Shell", 
-            24.501530, 56.504854, 
-            180, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة (تتضمن <strong>منفذين للشحن</strong>). يتوفر في الموقع <strong>سوبرماركت</strong>، <strong>مصلى</strong>، و<strong>دورات مياه</strong>.",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 8. محطة نماء للكهرباء (الأولى)
-        addCharger(
-            "محطة نماء للكهرباء", 
-            24.344938, 56.729517, 
-            180, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة تابعة لنماء للكهرباء (تتضمن <strong>منفذين للشحن</strong>).",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
-
-        // 9. محطة نماء للكهرباء (الثانية)
-        addCharger(
-            "محطة نماء للكهرباء", 
-            23.584899, 58.324200, 
-            180, 
-            "CCS2 (منفذين)", 
-            "محطة شحن سريعة تابعة لنماء للكهرباء (تتضمن <strong>منفذين للشحن</strong>).",
-            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
-        );
+        populateSidebar();
 
     </script>
 </body>
