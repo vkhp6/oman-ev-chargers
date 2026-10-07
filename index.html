@@ -17,6 +17,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #map {
@@ -37,61 +38,58 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(18, 18, 18, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(15, 15, 15, 0.96);
             z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
             padding: 15px;
             box-sizing: border-box;
         }
 
         .splash-content {
             text-align: center;
-            max-width: 400px;
+            max-width: 360px;
             width: 100%;
-            background: rgba(30, 30, 30, 0.95);
+            background: #1c1c1c;
             border: 1px solid #00e5ff;
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 20px;
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
             box-sizing: border-box;
         }
 
         .splash-icon {
-            font-size: 35px;
+            font-size: 32px;
             background: #121212;
             border: 3px solid #ffaa00;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px auto;
-            box-shadow: 0 0 20px rgba(255, 170, 0, 0.6);
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
         }
 
         .splash-content h1 {
-            font-size: 20px;
+            font-size: 18px;
             color: #00e5ff;
-            margin: 0 0 10px 0;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            margin: 0 0 8px 0;
         }
 
         .splash-notice {
-            font-size: 12px;
+            font-size: 11px;
             color: #dcdcdc;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.4;
+            margin-bottom: 15px;
             text-align: right;
-            background: rgba(0, 0, 0, 0.3);
+            background: #121212;
             padding: 10px;
-            border-radius: 10px;
+            border-radius: 8px;
             border-right: 4px solid #ffaa00;
         }
 
@@ -99,38 +97,32 @@
             background-color: #00e5ff;
             color: #121212;
             border: none;
-            padding: 10px 20px;
-            font-size: 15px;
+            padding: 10px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
             width: 100%;
         }
 
-        .splash-btn:hover {
-            background-color: #ffaa00;
-        }
-
-        /* ويدجت الطقس (متوافق مع الهاتف) */
+        /* ويدجت الطقس */
         .weather-widget {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 12px;
+            left: 12px;
             z-index: 1000;
-            background: rgba(18, 18, 18, 0.9);
+            background: rgba(18, 18, 18, 0.95);
             border: 2px solid #ffaa00;
             color: #ffffff;
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 8px;
             font-size: 11px;
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 5px;
-            max-width: 45%;
+            gap: 4px;
+            max-width: 42%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -139,137 +131,131 @@
         /* الأزرار العلوية */
         .top-controls {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             z-index: 1000;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 5px;
             justify-content: flex-end;
-            max-width: 50%;
+            max-width: 55%;
         }
 
         .control-btn {
-            background: rgba(18, 18, 18, 0.9);
+            background: rgba(18, 18, 18, 0.95);
             border: 2px solid #00e5ff;
             color: #00e5ff;
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 12px;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
-            transition: 0.3s;
+            font-size: 11px;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
             white-space: nowrap;
         }
 
-        .control-btn:hover {
+        .control-btn:active {
             background: #00e5ff;
             color: #121212;
         }
 
-        /* النافذة المنبثقة لخط الرحلة مع الانتقال الديناميكي لليسار */
+        /* النافذة المنبثقة لخط الرحلة */
         .custom-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
+            background: transparent;
+            pointer-events: none;
             z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
-            transition: all 0.5s ease;
         }
 
         .modal-content {
-            background: rgba(25, 25, 25, 0.98);
+            pointer-events: auto;
+            background: rgba(20, 20, 20, 0.98);
             border: 2px solid #ffaa00;
-            border-radius: 18px;
+            border-radius: 16px;
             width: 100%;
-            max-width: 380px;
-            padding: 20px;
+            max-width: 350px;
+            padding: 15px;
             text-align: right;
-            box-shadow: 0 0 30px rgba(255, 170, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
             position: relative;
             max-height: 85vh;
             overflow-y: auto;
             box-sizing: border-box;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            transition: transform 0.4s ease;
         }
 
-        /* كلاس الحركة الديناميكية لانتقال البوكس لليسار عند التحليل */
+        /* حركة ديناميكية آمنة تماماً على الهواتف */
         .modal-content.shifted-left {
-            transform: translateX(-28vw) scale(0.92);
+            transform: scale(0.96);
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .modal-content.shifted-left {
-                transform: translateY(15vh) scale(0.95); /* في الهواتف ينتقل للأعلى/الأسفل لتجنب الخروج عن الشاشة */
+                transform: translateX(-28vw) scale(0.92);
             }
         }
 
         .modal-content h2 {
             color: #ffaa00;
             margin-top: 0;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
             font-size: 11px;
             color: #00e5ff;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: bold;
         }
 
         .form-group select, .form-group input {
             width: 100%;
-            background: #222;
+            background: #111;
             color: #fff;
             border: 1px solid #444;
             border-radius: 8px;
-            padding: 8px;
-            font-size: 13px;
+            padding: 7px;
+            font-size: 12px;
             box-sizing: border-box;
         }
 
         .tariff-item {
-            background: rgba(0, 0, 0, 0.4);
+            background: #111;
             border-right: 4px solid #00e5ff;
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            font-size: 12px;
-            line-height: 1.4;
+            padding: 7px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            line-height: 1.3;
         }
 
         .modal-btn {
             background-color: #00e5ff;
             color: #121212;
             border: none;
-            padding: 10px;
+            padding: 9px;
             width: 100%;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 12px;
-            transition: 0.3s;
-            font-size: 14px;
-        }
-
-        .modal-btn:hover {
-            background-color: #ffaa00;
+            margin-top: 10px;
+            font-size: 13px;
         }
 
         /* القائمة الجانبية للمحطات */
@@ -277,14 +263,13 @@
             position: fixed;
             top: 0;
             right: -100%;
-            width: 85%;
-            max-width: 320px;
+            width: 80%;
+            max-width: 300px;
             height: 100%;
             background: rgba(18, 18, 18, 0.98);
-            backdrop-filter: blur(10px);
             z-index: 2000;
             box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            transition: right 0.4s ease;
+            transition: right 0.3s ease;
             display: flex;
             flex-direction: column;
             border-left: 1px solid #333;
@@ -296,7 +281,7 @@
         }
 
         .sidebar-header {
-            padding: 15px;
+            padding: 12px;
             border-bottom: 1px solid #333;
             display: flex;
             justify-content: space-between;
@@ -306,102 +291,88 @@
         .sidebar-header h3 {
             margin: 0;
             color: #00e5ff;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .close-sidebar {
             background: none;
             border: none;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
         }
 
         .sidebar-list {
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
             flex: 1;
         }
 
         .sidebar-item {
-            background: rgba(30, 30, 30, 0.8);
+            background: #222;
             border: 1px solid #444;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .sidebar-item:hover {
-            border-color: #00e5ff;
-            background: rgba(0, 229, 255, 0.1);
         }
 
         .sidebar-item-title {
             font-weight: bold;
             color: #00e5ff;
-            font-size: 14px;
-            margin-bottom: 3px;
+            font-size: 13px;
+            margin-bottom: 2px;
         }
 
         .sidebar-item-desc {
-            font-size: 11px;
+            font-size: 10px;
             color: #bbb;
         }
 
         /* زر الموقع الحالي */
         .locate-btn {
             position: absolute;
-            bottom: 25px;
-            right: 20px;
-            background: rgba(18, 18, 18, 0.9);
+            bottom: 20px;
+            right: 15px;
+            background: rgba(18, 18, 18, 0.95);
             border: 2px solid #00e5ff;
             color: #00e5ff;
-            width: 45px;
-            height: 45px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
         }
 
-        .locate-btn:hover {
-            background: #00e5ff;
-            color: #121212;
-        }
-
-        /* تفاصيل النوافذ المنبثقة للخرائط */
+        /* النوافذ المنبثقة للخريطة */
         .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-            background-color: rgba(30, 30, 30, 0.95) !important;
+            background-color: #1c1c1c !important;
             color: #fff !important;
-            border: 1px solid #333;
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
+            border: 1px solid #444;
+            border-radius: 10px;
         }
 
         .action-row {
             display: flex;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 5px;
+            margin-top: 6px;
         }
 
         .btn-link, .btn-share {
             flex: 1;
-            padding: 6px;
+            padding: 5px;
             text-align: center;
             text-decoration: none;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 12px;
-            transition: 0.3s;
-            cursor: pointer;
+            font-size: 11px;
             border: none;
+            cursor: pointer;
         }
 
         .btn-link {
@@ -410,32 +381,28 @@
         }
 
         .btn-share {
-            background-color: #333;
+            background-color: #222;
             color: #00e5ff;
             border: 1px solid #00e5ff;
-        }
-        .btn-share:hover {
-            background-color: #00e5ff;
-            color: #000;
         }
 
         /* نقطة موقع المستخدم */
         .user-pulse-container {
             position: relative;
-            width: 30px;
-            height: 30px;
+            width: 26px;
+            height: 26px;
         }
 
         .user-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: #00e5ff;
-            border: 3px solid #ffffff;
+            border: 2px solid #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: 8px;
-            left: 8px;
-            box-shadow: 0 0 10px #00e5ff;
+            top: 7px;
+            left: 7px;
+            box-shadow: 0 0 8px #00e5ff;
             z-index: 2;
         }
 
@@ -443,9 +410,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 30px;
-            height: 30px;
-            border: 3px solid #00e5ff;
+            width: 26px;
+            height: 26px;
+            border: 2px solid #00e5ff;
             border-radius: 50%;
             animation: radar-pulse 2s infinite ease-out;
             opacity: 0.8;
@@ -454,13 +421,13 @@
 
         @keyframes radar-pulse {
             0% { transform: scale(0.5); opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
+            100% { transform: scale(2.3); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- شاشة الترحيب المغبشة مع الملاحظة وزر التخطي -->
+    <!-- شاشة الترحيب -->
     <div id="splash-screen">
         <div class="splash-content">
             <div class="splash-icon">⚡</div>
@@ -469,20 +436,19 @@
                 ⚠️ <strong>ملاحظة هامة:</strong><br>
                 • الموقع لا زال قيد الإنشاء ولم تضف جميع المحطات بعد.<br>
                 • تفاصيل محطات الشحن حسب ما هو معلن.<br>
-                • ربما تصل إلى المحطة وتجدها لا تعمل لأسباب صيانة أو عطل مفاجئ.<br>
-                • هذا الموقع وُجد لمساعدتك على معرفة مواقع الشواحن فقط لا غير.<br><br>
+                • ربما تصل إلى المحطة وتجدها لا تعمل لأسباب صيانة أو عطل مفاجئ.<br><br>
                 <span style="color: #00e5ff; font-weight: bold; display: block; text-align: center;">تصميم وبرمجة الموقع بواسطة الأزهر</span>
             </div>
             <button class="splash-btn" onclick="closeSplash()">تمام !</button>
         </div>
     </div>
 
-    <!-- نافذة خط الرحلة الذكي (Trip Planner Modal) -->
+    <!-- نافذة خط الرحلة الذكي -->
     <div id="trip-modal" class="custom-modal">
         <div class="modal-content" id="trip-modal-box">
             <h2>🧭 حاسبة خط الرحلة الذكية</h2>
-            <div style="font-size: 11px; color: #bbb; margin-bottom: 12px; text-align: center;">
-                الانطلاق: <b>موقعك الحالي (GPS)</b><br>اكتب وجهتك وحدد بطاريتك لتحليل خط الرحلة!
+            <div style="font-size: 10px; color: #bbb; margin-bottom: 10px; text-align: center;">
+                الانطلاق: <b>موقعك الحالي (GPS)</b><br>اكتب وجهتك وحدد بطاريتك لتحليل الرحلة!
             </div>
             
             <div class="form-group">
@@ -511,38 +477,38 @@
                 </select>
             </div>
 
-            <button class="modal-btn" onclick="calculateUniversalTrip()">تحليل خط الرحلة وعرضه ع الخريطة 🚀</button>
+            <button class="modal-btn" onclick="calculateUniversalTrip()">تحليل خط الرحلة ورسم المسار 🚀</button>
             
-            <div id="trip-result" style="margin-top: 12px; font-size: 12px; line-height: 1.5; text-align: right;"></div>
+            <div id="trip-result" style="margin-top: 10px; font-size: 11px; line-height: 1.4; text-align: right;"></div>
 
-            <button class="modal-btn" style="background: #333; color: #fff; margin-top: 10px;" onclick="toggleTripModal()">إغلاق</button>
+            <button class="modal-btn" style="background: #333; color: #fff; margin-top: 8px;" onclick="toggleTripModal()">إغلاق</button>
         </div>
     </div>
 
-    <!-- نافذة تعرفة الشحن الرسمية (Modal) -->
+    <!-- نافذة تعرفة الشحن الرسمية -->
     <div id="tariff-modal" class="custom-modal">
-        <div class="modal-content">
+        <div class="modal-content" style="pointer-events: auto;">
             <h2>⚡ تعرفة الشحن الرسمية</h2>
-            <div style="font-size: 11px; color: #bbb; margin-bottom: 12px; text-align: center;">
+            <div style="font-size: 10px; color: #bbb; margin-bottom: 10px; text-align: center;">
                 رسوم شحن المركبات الكهربائية في سلطنة عمان
             </div>
             <div class="tariff-item">
                 🟢 <b>50 بيسة</b> لكل كيلوواط/ساعة<br>
-                <span style="color: #00e5ff; font-size: 10px;">للشواحن التي تبلغ قدرتها 90 كيلوواط فأقل.</span>
+                <span style="color: #00e5ff; font-size: 9px;">للشواحن التي تبلغ قدرتها 90 كيلوواط فأقل.</span>
             </div>
             <div class="tariff-item">
                 🟡 <b>90 بيسة</b> لكل كيلوواط/ساعة<br>
-                <span style="color: #00e5ff; font-size: 10px;">للشواحن التي تتراوح قدرتها بين 91 وحتى 180 كيلوواط.</span>
+                <span style="color: #00e5ff; font-size: 9px;">للشواحن التي تتراوح قدرتها بين 91 وحتى 180 كيلوواط.</span>
             </div>
             <div class="tariff-item">
                 🔴 <b>120 بيسة</b> لكل كيلوواط/ساعة<br>
-                <span style="color: #00e5ff; font-size: 10px;">للشواحن التي تبلغ قدرتها 181 كيلوواط فأكثر.</span>
+                <span style="color: #00e5ff; font-size: 9px;">للشواحن التي تبلغ قدرتها 181 كيلوواط فأكثر.</span>
             </div>
             <button class="modal-btn" onclick="toggleTariffModal()">إغلاق</button>
         </div>
     </div>
 
-    <!-- ويدجت الطقس التفاعلي حسب الموقع -->
+    <!-- ويدجت الطقس -->
     <div id="weather-widget" class="weather-widget">
         <span>🌤️ جاري الطقس...</span>
     </div>
@@ -561,12 +527,10 @@
             <h3>قائمة المحطات</h3>
             <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         </div>
-        <div id="sidebar-list" class="sidebar-list">
-            <!-- ستتم تعبئتها تلقائياً -->
-        </div>
+        <div id="sidebar-list" class="sidebar-list"></div>
     </div>
 
-    <!-- زر لتوجيه الكاميرا لموقعك بضغطة واحدة -->
+    <!-- زر الموقع الحالي -->
     <div class="locate-btn" onclick="panToUser()" title="موقعي">
         📍
     </div>
@@ -599,21 +563,22 @@
 
         var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
 
-        var baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 18
         }).addTo(map);
 
         var userLocation = null;
         var userMarker = null;
         var stationsData = [];
-        var activeRouteLayer = null; // طبقة مسار الرحلة على الخريطة
-        var routeStopMarker = null;  // دبوس محطة التوقف المقترحة
+        var activeRouteShadow = null;
+        var activeRouteLayer = null;
+        var routeStopMarker = null;
 
         var userIcon = L.divIcon({
             html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
             className: '',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
+            iconSize: [26, 26],
+            iconAnchor: [13, 13]
         });
 
         function fetchWeather(lat, lng) {
@@ -626,7 +591,7 @@
                         document.getElementById('weather-widget').innerHTML = `<span>🌡️ ${temp}°م</span>`;
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
                 });
         }
@@ -651,8 +616,7 @@
                 map.flyTo(userLocation, 13, { animate: true, duration: 2 });
                 fetchWeather(lat, lng);
 
-            }, function(error) { 
-                console.log("Geolocation error");
+            }, function() { 
                 document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
             }, { enableHighAccuracy: true });
         } else {
@@ -660,20 +624,19 @@
         }
 
         var fastChargerIcon = L.divIcon({
-            html: '<div style="font-size: 20px; background: #121212; border: 2px solid #ffaa00; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ffaa00;">⚡</div>',
+            html: '<div style="font-size: 16px; background: #121212; border: 2px solid #ffaa00; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ffaa00;">⚡</div>',
+            className: '',
+            iconSize: [26, 26],
+            iconAnchor: [13, 26],
+            popupAnchor: [0, -26] 
+        });
+
+        var stopChargerIcon = L.divIcon({
+            html: '<div style="font-size: 18px; background: #ffaa00; border: 2px solid #00e5ff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px #00e5ff;">🛑⚡</div>',
             className: '',
             iconSize: [30, 30],
             iconAnchor: [15, 30],
-            popupAnchor: [0, -30] 
-        });
-
-        // أيقونة مميزة لمحطة التوقف الموصى بها على خط الرحلة
-        var stopChargerIcon = L.divIcon({
-            html: '<div style="font-size: 22px; background: #ffaa00; border: 3px solid #00e5ff; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #00e5ff; animation: pulse 1.5s infinite;">🛑⚡</div>',
-            className: '',
-            iconSize: [34, 34],
-            iconAnchor: [17, 34],
-            popupAnchor: [0, -34]
+            popupAnchor: [0, -30]
         });
 
         function toggleSidebar() {
@@ -683,23 +646,15 @@
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    alert("عذراً، ميزة ملء الشاشة غير مدعومة في متصفحك.");
-                });
+                document.documentElement.requestFullscreen().catch(() => {});
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) { document.exitFullscreen(); }
             }
         }
 
         window.shareStation = function(name, link) {
             if (navigator.share) {
-                navigator.share({
-                    title: name,
-                    text: `شاهد محطة الشحن: ${name}`,
-                    url: link
-                }).catch(() => {});
+                navigator.share({ title: name, text: `شاهد محطة الشحن: ${name}`, url: link }).catch(() => {});
             } else {
                 navigator.clipboard.writeText(link);
                 alert("تم نسخ رابط المحطة للحافظة!");
@@ -712,22 +667,22 @@
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
             marker.on('click', function() {
-                var distanceText = '<div style="color: #ff5555; font-size: 12px; margin-bottom: 8px;">📍 يرجى تفعيل الموقع لمعرفة المسافة</div>';
+                var distanceText = '<div style="color: #ff5555; font-size: 11px; margin-bottom: 6px;">📍 يرجى تفعيل الموقع لمعرفة المسافة</div>';
                 
                 if (userLocation) {
                     var distanceInMeters = userLocation.distanceTo([lat, lng]);
                     var distanceInKm = (distanceInMeters / 1000).toFixed(1); 
-                    distanceText = `<div style="color: #00e5ff; font-size: 13px; margin-bottom: 8px; font-weight: bold;">📍 يبعد عنك: ${distanceInKm} كم</div>`;
+                    distanceText = `<div style="color: #00e5ff; font-size: 12px; margin-bottom: 6px; font-weight: bold;">📍 يبعد عنك: ${distanceInKm} كم</div>`;
                 }
 
                 var popupContent = `
-                    <div dir="rtl" style="text-align: right; min-width: 210px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                        <div style="font-size: 16px; font-weight: bold; color: #00e5ff; margin-bottom: 4px;">${name}</div>
+                    <div dir="rtl" style="text-align: right; min-width: 190px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <div style="font-size: 14px; font-weight: bold; color: #00e5ff; margin-bottom: 3px;">${name}</div>
                         ${distanceText}
-                        <div style="font-size: 12px; color: #dcdcdc; margin-bottom: 8px; line-height: 1.4;">${description}</div>
-                        <div style="margin-bottom: 6px; font-size: 12px;"><strong>المنفذ:</strong> ${plugType}</div>
+                        <div style="font-size: 11px; color: #dcdcdc; margin-bottom: 6px; line-height: 1.3;">${description}</div>
+                        <div style="margin-bottom: 5px; font-size: 11px;"><strong>المنفذ:</strong> ${plugType}</div>
                         
-                        <div style="display: inline-block; background: #ffaa00; color: #000; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 12px; margin-bottom: 4px;">
+                        <div style="display: inline-block; background: #ffaa00; color: #000; padding: 2px 6px; border-radius: 5px; font-weight: bold; font-size: 11px; margin-bottom: 4px;">
                             ⚡ ${power} kW
                         </div>
 
@@ -737,7 +692,6 @@
                         </div>
                     </div>
                 `;
-                
                 marker.unbindPopup();
                 marker.bindPopup(popupContent).openPopup();
             });
@@ -747,12 +701,12 @@
             var listContainer = document.getElementById('sidebar-list');
             listContainer.innerHTML = '';
             
-            stationsData.forEach(function(station, index) {
+            stationsData.forEach(function(station) {
                 var item = document.createElement('div');
                 item.className = 'sidebar-item';
                 item.innerHTML = `
                     <div class="sidebar-item-title">${station.name} (${station.power} kW)</div>
-                    <div class="sidebar-item-desc">${station.description.substring(0, 45)}...</div>
+                    <div class="sidebar-item-desc">${station.description.substring(0, 40)}...</div>
                 `;
                 item.onclick = function() {
                     map.flyTo([station.lat, station.lng], 15, { animate: true, duration: 1.5 });
@@ -762,7 +716,6 @@
             });
         }
 
-        // تحليل خط الرحلة مع الحركة الديناميكية وتوليد خط المسار ونقطة التوقف ع الخريطة
         function calculateUniversalTrip() {
             var resultDiv = document.getElementById('trip-result');
             var modalBox = document.getElementById('trip-modal-box');
@@ -778,10 +731,8 @@
                 return;
             }
 
-            // تفعيل حركة انزلاق البوكس لليسار لإظهار الخريطة بوضوح
             modalBox.classList.add('shifted-left');
-
-            resultDiv.innerHTML = `<span style="color: #00e5ff;">⏳ جاري تحليل خط الرحلة ورسم المسار على الخريطة...</span>`;
+            resultDiv.innerHTML = `<span style="color: #00e5ff;">⏳ جاري تحليل خط الرحلة ورسم المسار...</span>`;
 
             var maxRange = parseFloat(document.getElementById('trip-car-range').value);
             var batteryPercent = parseFloat(document.getElementById('trip-battery').value);
@@ -798,31 +749,25 @@
 
                         var distanceInMeters = userLocation.distanceTo(destLatLng);
                         var distanceInKm = Math.round(distanceInMeters / 1000);
-
                         var currentRange = maxRange * (batteryPercent / 100);
 
-                        // مسح أي مسار أو نقطة توقف سابقة ع الخريطة
+                        if (activeRouteShadow) { map.removeLayer(activeRouteShadow); }
                         if (activeRouteLayer) { map.removeLayer(activeRouteLayer); }
                         if (routeStopMarker) { map.removeLayer(routeStopMarker); }
 
-                        // رسم خط المسار الأزرق النيون بين موقعك والوجهة
-                        activeRouteLayer = L.polyline([userLocation, destLatLng], {
-                            color: '#00e5ff',
-                            weight: 4,
-                            opacity: 0.8,
-                            dashArray: '8, 8'
-                        }).addTo(map);
+                        activeRouteShadow = L.polyline([userLocation, destLatLng], { color: '#000000', weight: 6, opacity: 0.6 }).addTo(map);
+                        activeRouteLayer = L.polyline([userLocation, destLatLng], { color: '#00e5ff', weight: 3, opacity: 0.9, dashArray: '8, 8' }).addTo(map);
 
-                        let html = `<div style="background: rgba(0,0,0,0.6); padding: 8px; border-radius: 8px; border-right: 3px solid #ffaa00;">`;
+                        let html = `<div style="background: #111; padding: 8px; border-radius: 6px; border-right: 3px solid #ffaa00;">`;
                         html += `📍 الوجهة: <b>${destInput}</b><br>`;
                         html += `📏 المسافة الكلية: <b>حوالي ${distanceInKm} كم</b><br>`;
                         html += `🔋 مدى البطارية: <b>حوالي ${Math.round(currentRange)} كم</b><br><br>`;
 
                         if (currentRange >= distanceInKm) {
                             html += `<span style="color: #00ffaa; font-weight: bold;">✅ بطاريتك تكفي للوصول مباشرة دون توقف!</span>`;
-                            map.fitBounds(activeRouteLayer.getBounds(), { padding: [50, 50] });
+                            map.fitBounds(activeRouteLayer.getBounds(), { padding: [40, 40] });
                         } else {
-                            html += `<span style="color: #ffaa00; font-weight: bold;">⚠️ بطاريتك لن تكفي! تم تحديد محطة التوقف في طريقك:</span><br><br>`;
+                            html += `<span style="color: #ffaa00; font-weight: bold;">⚠️ بطاريتك لن تكفي! إليك محطة التوقف المقترحة:</span><br><br>`;
                             
                             var targetIdealDistance = currentRange * 0.75;
                             var bestStation = null;
@@ -857,18 +802,15 @@
                                 html += `🛑 <b>${bestStation.station.name}</b><br>`;
                                 html += `• تبعد عنك: <b>حوالي ${Math.round(bestStation.km)} كم</b><br>`;
                                 html += `• القدرة: <b>${bestStation.station.power} kW</b><br>`;
-                                html += `<span style="color: #00e5ff; font-size: 10px;">تم تركيز الخريطة عليها تلقائياً!</span>`;
 
-                                // إضافة دبوس محطة التوقف الاحترافي على الخريطة
                                 routeStopMarker = L.marker(bestStation.latlng, { icon: stopChargerIcon }).addTo(map)
                                     .bindPopup(`<div style="text-align:right;"><b>🛑 محطة توقف مقترحة</b><br>${bestStation.station.name}<br>قوة الشحن: ${bestStation.station.power} kW</div>`)
                                     .openPopup();
 
-                                // عمل Zoom احترافي نحو محطة التوقف المقترحة
                                 map.flyTo(bestStation.latlng, 11, { animate: true, duration: 1.5 });
                             } else {
                                 html += `💡 يرجى مراجعة القائمة الجانبية للمحطات.`;
-                                map.fitBounds(activeRouteLayer.getBounds(), { padding: [50, 50] });
+                                map.fitBounds(activeRouteLayer.getBounds(), { padding: [40, 40] });
                             }
                         }
                         html += `</div>`;
@@ -878,13 +820,13 @@
                         resultDiv.innerHTML = `<span style="color: #ff5555;">❌ لم نتمكن من إيجاد الوجهة "${destInput}".</span>`;
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ حدث خطأ في الاتصال.</span>`;
                 });
         }
 
         // ==========================================
-        // منطقة إضافة المحطات (9 محطات)
+        // إضافة المحطات (9 محطات)
         // ==========================================
         addCharger("محطة EVO (نفط عُمان)", 23.622844, 58.507355, 180, "CCS2 (منفذين)", "وجهة شحن متكاملة (تتضمن منفذين). تتوفر قهوة 55 Coffee ومرافق.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة Shell", 23.584534, 58.198266, 50, "CCS2 (منفذ واحد)", "محطة متكاملة تتضمن مقهى، سوبرماركت، ومصلى ودورات مياه.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
@@ -897,7 +839,6 @@
         addCharger("محطة نماء للكهرباء", 23.584899, 58.324200, 180, "CCS2 (منفذين)", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
 
         populateSidebar();
-
     </script>
 </body>
 </html>
