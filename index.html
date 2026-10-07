@@ -136,7 +136,7 @@
             text-overflow: ellipsis;
         }
 
-        /* الأزرار العلوية (متوافقة تماماً مع شاشات الهاتف) */
+        /* الأزرار العلوية */
         .top-controls {
             position: absolute;
             top: 15px;
@@ -168,21 +168,22 @@
             color: #121212;
         }
 
-        /* النوافذ المنبثقة العامة (Modals متوافقة مع الهاتف) */
+        /* النافذة المنبثقة لخط الرحلة مع الانتقال الديناميكي لليسار */
         .custom-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
             z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 15px;
             box-sizing: border-box;
+            transition: all 0.5s ease;
         }
 
         .modal-content {
@@ -198,6 +199,18 @@
             max-height: 85vh;
             overflow-y: auto;
             box-sizing: border-box;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+        }
+
+        /* كلاس الحركة الديناميكية لانتقال البوكس لليسار عند التحليل */
+        .modal-content.shifted-left {
+            transform: translateX(-28vw) scale(0.92);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content.shifted-left {
+                transform: translateY(15vh) scale(0.95); /* في الهواتف ينتقل للأعلى/الأسفل لتجنب الخروج عن الشاشة */
+            }
         }
 
         .modal-content h2 {
@@ -259,7 +272,7 @@
             background-color: #ffaa00;
         }
 
-        /* القائمة الجانبية للمحطات (متوافقة مع الهاتف) */
+        /* القائمة الجانبية للمحطات */
         .sidebar {
             position: fixed;
             top: 0;
@@ -464,17 +477,17 @@
         </div>
     </div>
 
-    <!-- نافذة خط الرحلة الذكي (Trip Planner Modal) مع دعم البحث الحر لأي وجهة -->
+    <!-- نافذة خط الرحلة الذكي (Trip Planner Modal) -->
     <div id="trip-modal" class="custom-modal">
-        <div class="modal-content">
+        <div class="modal-content" id="trip-modal-box">
             <h2>🧭 حاسبة خط الرحلة الذكية</h2>
             <div style="font-size: 11px; color: #bbb; margin-bottom: 12px; text-align: center;">
-                الانطلاق: <b>موقعك الحالي (GPS)</b><br>اكتب أي وجهة (مثل: دبي، صلالة، صحار...) لحساب المسافة!
+                الانطلاق: <b>موقعك الحالي (GPS)</b><br>اكتب وجهتك وحدد بطاريتك لتحليل خط الرحلة!
             </div>
             
             <div class="form-group">
                 <label>إلى (اكتب اسم الوجهة بحرية):</label>
-                <input type="text" id="trip-destination-input" placeholder="مثال: دبي، صلالة، صحار، نزوى..." />
+                <input type="text" id="trip-destination-input" placeholder="مثال: دبي مول، صلالة، صحار..." />
             </div>
 
             <div class="form-group">
@@ -490,14 +503,15 @@
                 <label>نسبة البطارية الحالية:</label>
                 <select id="trip-battery">
                     <option value="100">100% (ممتلئة)</option>
+                    <option value="95">95%</option>
                     <option value="80">80%</option>
-                    <option value="50" selected>50% (متوسطة)</option>
-                    <option value="30">30% (منخفضة)</option>
+                    <option value="50">50% (متوسطة)</option>
+                    <option value="40" selected>40% (منخفضة)</option>
                     <option value="20">20% (حرجة)</option>
                 </select>
             </div>
 
-            <button class="modal-btn" onclick="calculateUniversalTrip()">احسب المسافة وتعرف على المحطة 🚀</button>
+            <button class="modal-btn" onclick="calculateUniversalTrip()">تحليل خط الرحلة وعرضه ع الخريطة 🚀</button>
             
             <div id="trip-result" style="margin-top: 12px; font-size: 12px; line-height: 1.5; text-align: right;"></div>
 
@@ -569,91 +583,18 @@
 
         function toggleTripModal() {
             var modal = document.getElementById('trip-modal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+            var modalBox = document.getElementById('trip-modal-box');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                modalBox.classList.remove('shifted-left');
+            } else {
+                modal.style.display = 'flex';
+            }
         }
 
         function toggleTariffModal() {
             var modal = document.getElementById('tariff-modal');
             modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        // حساب المسافة لأي وجهة في العالم باستخدام نظام البحث الجغرافي المباشر (Nominatim)
-        function calculateUniversalTrip() {
-            var resultDiv = document.getElementById('trip-result');
-
-            if (!userLocation) {
-                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى تفعيل الموقع (GPS) أولاً لنقطة الانطلاق!</span>`;
-                return;
-            }
-
-            var destInput = document.getElementById('trip-destination-input').value.trim();
-            if (!destInput) {
-                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى كتابة اسم الوجهة (مثل: دبي، صلالة، صحار...)</span>`;
-                return;
-            }
-
-            resultDiv.innerHTML = `<span style="color: #00e5ff;">⏳ جاري البحث عن الوجهة وحساب المسافة...</span>`;
-
-            var maxRange = parseFloat(document.getElementById('trip-car-range').value);
-            var batteryPercent = parseFloat(document.getElementById('trip-battery').value);
-
-            // استعلام إلكتروني فوري لإيجاد إحداثيات الوجهة المكتوبة (مثل دبي أو أي مدينة)
-            var geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destInput)}`;
-
-            fetch(geocodeUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.length > 0) {
-                        var destLat = parseFloat(data[0].lat);
-                        var destLon = parseFloat(data[0].lon);
-                        var destLatLng = L.latLng(destLat, destLon);
-                        var displayName = data[0].display_name;
-
-                        // حساب المسافة الفعلية بالأمتار ثم بالكيلومتر
-                        var distanceInMeters = userLocation.distanceTo(destLatLng);
-                        var distanceInKm = Math.round(distanceInMeters / 1000);
-
-                        var currentRange = maxRange * (batteryPercent / 100);
-
-                        let html = `<div style="background: rgba(0,0,0,0.5); padding: 8px; border-radius: 8px; border-right: 3px solid #00e5ff;">`;
-                        html += `📍 الوجهة: <b>${destInput}</b><br>`;
-                        html += `📏 المسافة الفعلية: <b>حوالي ${distanceInKm} كم</b><br>`;
-                        html += `🔋 المدى الحالي لبطاريتك: <b>حوالي ${Math.round(currentRange)} كم</b><br><br>`;
-
-                        if (currentRange >= distanceInKm) {
-                            html += `<span style="color: #00ffaa; font-weight: bold;">✅ بطاريتك تكفي تماماً للوصول إلى ${destInput} دون توقف.</span>`;
-                        } else {
-                            html += `<span style="color: #ffaa00; font-weight: bold;">⚠️ المدى لا يكفي! أنت مضطر للتوقف للشحن في طريقك.</span><br><br>`;
-                            
-                            // البحث عن أقرب محطة شحن على الخريطة
-                            var nearestStation = null;
-                            var minDistance = Infinity;
-
-                            stationsData.forEach(function(station) {
-                                var stationLatLng = L.latLng(station.lat, station.lng);
-                                var distToStation = userLocation.distanceTo(stationLatLng);
-                                if (distToStation < minDistance) {
-                                    minDistance = distToStation;
-                                    nearestStation = station;
-                                }
-                            });
-
-                            if (nearestStation) {
-                                var stationKm = (minDistance / 1000).toFixed(1);
-                                html += `💡 <b>محطة التوقف المقترحة في طريقك:</b><br>`;
-                                html += `• <b>${nearestStation.name}</b> (تبعد عنك ${stationKm} كم - بقوة ${nearestStation.power} kW)`;
-                            }
-                        }
-                        html += `</div>`;
-                        resultDiv.innerHTML = html;
-
-                    } else {
-                        resultDiv.innerHTML = `<span style="color: #ff5555;">❌ عذراً، لم نتمكن من العثور على الوجهة "${destInput}". تأكد من صحة الإملاء.</span>`;
-                    }
-                })
-                .catch(error => {
-                    resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ حدث خطأ في الاتصال أثناء البحث عن الوجهة.</span>`;
-                });
         }
 
         var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
@@ -665,6 +606,8 @@
         var userLocation = null;
         var userMarker = null;
         var stationsData = [];
+        var activeRouteLayer = null; // طبقة مسار الرحلة على الخريطة
+        var routeStopMarker = null;  // دبوس محطة التوقف المقترحة
 
         var userIcon = L.divIcon({
             html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
@@ -722,6 +665,15 @@
             iconSize: [30, 30],
             iconAnchor: [15, 30],
             popupAnchor: [0, -30] 
+        });
+
+        // أيقونة مميزة لمحطة التوقف الموصى بها على خط الرحلة
+        var stopChargerIcon = L.divIcon({
+            html: '<div style="font-size: 22px; background: #ffaa00; border: 3px solid #00e5ff; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #00e5ff; animation: pulse 1.5s infinite;">🛑⚡</div>',
+            className: '',
+            iconSize: [34, 34],
+            iconAnchor: [17, 34],
+            popupAnchor: [0, -34]
         });
 
         function toggleSidebar() {
@@ -808,6 +760,127 @@
                 };
                 listContainer.appendChild(item);
             });
+        }
+
+        // تحليل خط الرحلة مع الحركة الديناميكية وتوليد خط المسار ونقطة التوقف ع الخريطة
+        function calculateUniversalTrip() {
+            var resultDiv = document.getElementById('trip-result');
+            var modalBox = document.getElementById('trip-modal-box');
+
+            if (!userLocation) {
+                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى تفعيل الموقع (GPS) أولاً لنقطة الانطلاق!</span>`;
+                return;
+            }
+
+            var destInput = document.getElementById('trip-destination-input').value.trim();
+            if (!destInput) {
+                resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ يرجى كتابة اسم الوجهة (مثل: دبي مول، صلالة...)</span>`;
+                return;
+            }
+
+            // تفعيل حركة انزلاق البوكس لليسار لإظهار الخريطة بوضوح
+            modalBox.classList.add('shifted-left');
+
+            resultDiv.innerHTML = `<span style="color: #00e5ff;">⏳ جاري تحليل خط الرحلة ورسم المسار على الخريطة...</span>`;
+
+            var maxRange = parseFloat(document.getElementById('trip-car-range').value);
+            var batteryPercent = parseFloat(document.getElementById('trip-battery').value);
+
+            var geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destInput)}`;
+
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        var destLat = parseFloat(data[0].lat);
+                        var destLon = parseFloat(data[0].lon);
+                        var destLatLng = L.latLng(destLat, destLon);
+
+                        var distanceInMeters = userLocation.distanceTo(destLatLng);
+                        var distanceInKm = Math.round(distanceInMeters / 1000);
+
+                        var currentRange = maxRange * (batteryPercent / 100);
+
+                        // مسح أي مسار أو نقطة توقف سابقة ع الخريطة
+                        if (activeRouteLayer) { map.removeLayer(activeRouteLayer); }
+                        if (routeStopMarker) { map.removeLayer(routeStopMarker); }
+
+                        // رسم خط المسار الأزرق النيون بين موقعك والوجهة
+                        activeRouteLayer = L.polyline([userLocation, destLatLng], {
+                            color: '#00e5ff',
+                            weight: 4,
+                            opacity: 0.8,
+                            dashArray: '8, 8'
+                        }).addTo(map);
+
+                        let html = `<div style="background: rgba(0,0,0,0.6); padding: 8px; border-radius: 8px; border-right: 3px solid #ffaa00;">`;
+                        html += `📍 الوجهة: <b>${destInput}</b><br>`;
+                        html += `📏 المسافة الكلية: <b>حوالي ${distanceInKm} كم</b><br>`;
+                        html += `🔋 مدى البطارية: <b>حوالي ${Math.round(currentRange)} كم</b><br><br>`;
+
+                        if (currentRange >= distanceInKm) {
+                            html += `<span style="color: #00ffaa; font-weight: bold;">✅ بطاريتك تكفي للوصول مباشرة دون توقف!</span>`;
+                            map.fitBounds(activeRouteLayer.getBounds(), { padding: [50, 50] });
+                        } else {
+                            html += `<span style="color: #ffaa00; font-weight: bold;">⚠️ بطاريتك لن تكفي! تم تحديد محطة التوقف في طريقك:</span><br><br>`;
+                            
+                            var targetIdealDistance = currentRange * 0.75;
+                            var bestStation = null;
+                            var closestToIdeal = Infinity;
+
+                            stationsData.forEach(function(station) {
+                                var stationLatLng = L.latLng(station.lat, station.lng);
+                                var distToStation = userLocation.distanceTo(stationLatLng) / 1000;
+                                
+                                if (distToStation > 15 && distToStation <= currentRange) {
+                                    var diff = Math.abs(distToStation - targetIdealDistance);
+                                    if (diff < closestToIdeal) {
+                                        closestToIdeal = diff;
+                                        bestStation = { station: station, km: distToStation, latlng: stationLatLng };
+                                    }
+                                }
+                            });
+
+                            if (!bestStation && stationsData.length > 0) {
+                                var maxValidDist = 0;
+                                stationsData.forEach(function(station) {
+                                    var stationLatLng = L.latLng(station.lat, station.lng);
+                                    var distToStation = userLocation.distanceTo(stationLatLng) / 1000;
+                                    if (distToStation > maxValidDist && distToStation <= currentRange) {
+                                        maxValidDist = distToStation;
+                                        bestStation = { station: station, km: distToStation, latlng: stationLatLng };
+                                    }
+                                });
+                            }
+
+                            if (bestStation) {
+                                html += `🛑 <b>${bestStation.station.name}</b><br>`;
+                                html += `• تبعد عنك: <b>حوالي ${Math.round(bestStation.km)} كم</b><br>`;
+                                html += `• القدرة: <b>${bestStation.station.power} kW</b><br>`;
+                                html += `<span style="color: #00e5ff; font-size: 10px;">تم تركيز الخريطة عليها تلقائياً!</span>`;
+
+                                // إضافة دبوس محطة التوقف الاحترافي على الخريطة
+                                routeStopMarker = L.marker(bestStation.latlng, { icon: stopChargerIcon }).addTo(map)
+                                    .bindPopup(`<div style="text-align:right;"><b>🛑 محطة توقف مقترحة</b><br>${bestStation.station.name}<br>قوة الشحن: ${bestStation.station.power} kW</div>`)
+                                    .openPopup();
+
+                                // عمل Zoom احترافي نحو محطة التوقف المقترحة
+                                map.flyTo(bestStation.latlng, 11, { animate: true, duration: 1.5 });
+                            } else {
+                                html += `💡 يرجى مراجعة القائمة الجانبية للمحطات.`;
+                                map.fitBounds(activeRouteLayer.getBounds(), { padding: [50, 50] });
+                            }
+                        }
+                        html += `</div>`;
+                        resultDiv.innerHTML = html;
+
+                    } else {
+                        resultDiv.innerHTML = `<span style="color: #ff5555;">❌ لم نتمكن من إيجاد الوجهة "${destInput}".</span>`;
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<span style="color: #ff5555;">⚠️ حدث خطأ في الاتصال.</span>`;
+                });
         }
 
         // ==========================================
