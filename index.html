@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خريطة الشواحن السريعة - عُمان</title>
+    
+    <!-- استدعاء مكتبة الخرائط Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #121212;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* شريط العنوان */
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 18, 18, 0.85);
+            padding: 10px 25px;
+            border-radius: 30px;
+            z-index: 1000;
+            border: 1px solid #00e5ff;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #00e5ff;
+            white-space: nowrap;
+        }
+
+        /* زر العودة للموقع الحالي (عائم أسفل اليمين) */
+        .locate-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(18, 18, 18, 0.9);
+            border: 2px solid #00e5ff;
+            color: #00e5ff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .locate-btn:hover {
+            background: #00e5ff;
+            color: #121212;
+            transform: scale(1.1);
+        }
+
+        /* تصميم نافذة التفاصيل */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background-color: rgba(30, 30, 30, 0.95) !important;
+            color: #fff !important;
+            border: 1px solid #333;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* تصميم النقطة الاحترافية لموقع المستخدم (رادار نبضي) */
+        .user-pulse-container {
+            position: relative;
+            width: 30px;
+            height: 30px;
+        }
+
+        .user-dot {
+            width: 14px;
+            height: 14px;
+            background-color: #00e5ff;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            box-shadow: 0 0 10px #00e5ff;
+            z-index: 2;
+        }
+
+        .user-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00e5ff;
+            border-radius: 50%;
+            animation: radar-pulse 2s infinite ease-out;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        @keyframes radar-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>⚡ الشواحن السريعة في عُمان</h1>
+    </div>
+
+    <!-- زر لتوجيه الكاميرا لموقعك بضغطة واحدة -->
+    <div class="locate-btn" onclick="panToUser()" title="موقعي">
+        📍
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 1. تهيئة الخريطة
+        var map = L.map('map', {
+            zoomControl: false 
+        }).setView([21.4735, 55.9754], 6);
+
+        // 2. طبقة خرائط القمر الصناعي
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri',
+            maxZoom: 18
+        }).addTo(map);
+
+        var userLocation = null;
+        var userMarker = null;
+
+        // تصميم أيقونة موقع المستخدم النبضية الاحترافية
+        var userIcon = L.divIcon({
+            html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
+            className: '',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // دالة تحريك الكاميرا بسلاسة نحو موقع المستخدم
+        function panToUser() {
+            if (userLocation) {
+                map.flyTo(userLocation, 14, { animate: true, duration: 1.5 });
+            } else {
+                alert("جاري تحديد موقعك، يرجى الانتظار أو السماح للمتصفح بالوصول للموقع.");
+            }
+        }
+
+        // 3. تفعيل جلب الموقع الحقيقي عبر GPS المتصفح
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                userLocation = L.latLng(lat, lng);
+
+                // إضافة علامة الموقع النبضية
+                userMarker = L.marker(userLocation, {icon: userIcon}).addTo(map)
+                    .bindPopup('<div dir="rtl" style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
+
+                // الطيران التلقائي لموقع المستخدم فور فتحه للموقع
+                map.flyTo(userLocation, 13, { animate: true, duration: 2 });
+
+            }, function(error) {
+                console.log("تم رفض إذن تحديد الموقع أو حدث خطأ.");
+            }, { enableHighAccuracy: true });
+        }
+
+        // 4. تصميم أيقونة الشاحن السريع (⚡)
+        var fastChargerIcon = L.divIcon({
+            html: '<div style="font-size: 20px; background: #121212; border: 2px solid #ffaa00; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ffaa00;">⚡</div>',
+            className: '',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+            popupAnchor: [0, -30] 
+        });
+
+        // 5. دالة إضافة المحطات وحساب المسافة بدقة
+        function addCharger(name, lat, lng, power, plugType, status, description, gmapsLink) {
+            var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
+            
+            marker.on('click', function() {
+                var distanceText = '<div style="color: #ff5555; font-size: 13px; margin-bottom: 10px;">📍 يرجى تفعيل الموقع لمعرفة المسافة</div>';
+                
+                if (userLocation) {
+                    var distanceInMeters = userLocation.distanceTo([lat, lng]);
+                    var distanceInKm = (distanceInMeters / 1000).toFixed(1); 
+                    distanceText = `<div style="color: #00e5ff; font-size: 14px; margin-bottom: 10px; font-weight: bold;">📍 يبعد عنك: ${distanceInKm} كم</div>`;
+                }
+
+                var popupContent = `
+                    <div dir="rtl" style="text-align: right; min-width: 230px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <div style="font-size: 18px; font-weight: bold; color: #00e5ff; margin-bottom: 5px;">${name}</div>
+                        
+                        ${distanceText}
+                        
+                        <div style="font-size: 13px; color: #dcdcdc; margin-bottom: 12px; line-height: 1.6;">
+                            ${description}
+                        </div>
+
+                        <div style="margin-bottom: 4px; font-size: 14px;"><strong>المنفذ:</strong> ${plugType}</div>
+                        <div style="margin-bottom: 15px; font-size: 14px;"><strong>الحالة:</strong> ${status}</div>
+                        
+                        <div style="display: inline-block; background: #ffaa00; color: #000; padding: 5px 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px;">
+                            ⚡ ${power} kW
+                        </div>
+                        
+                        <a href="${gmapsLink}" target="_blank" style="display: block; width: 90%; margin: 0 auto; padding: 10px; background-color: #00e5ff; color: #000; text-align: center; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s;">
+                            🚗 انطلق الآن
+                        </a>
+                    </div>
+                `;
+                marker.bindPopup(popupContent).openPopup();
+            });
+        }
+
+        // ==========================================
+        // منطقة إضافة المحطات
+        // ==========================================
+
+        // 1. محطة EVO (نفط عُمان)
+        addCharger(
+            "محطة EVO (نفط عُمان)", 
+            23.622844, 58.507355, 
+            180, 
+            "CCS2", 
+            "🟢 متاحة",
+            "وجهة شحن متكاملة تضمن لك راحة تامة أثناء انتظارك. استمتع بقهوتك المفضلة من <strong>55 Coffee</strong> أو تذوق كوباً من <strong>تشاي</strong> المميز. تتوفر بالمحطة دورات مياه نظيفة لخدمتك، كما يقع المسجد على بُعد دقيقتين فقط بالسيارة.",
+            "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
+        );
+
+    </script>
+</body>
+</html>
