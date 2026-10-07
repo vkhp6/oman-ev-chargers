@@ -271,7 +271,6 @@
             popupAnchor: [0, -30] 
         });
 
-        // دالة إضافة المحطة (بدون عرض الحالة)
         function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
@@ -343,9 +342,9 @@
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
 
-        // 4. محطة Shell (الرستاق 1)
+        // 4. محطة Shell 
         addCharger(
-            "محطة Shell - الرستاق", 
+            "محطة Shell", 
             23.711551, 57.241478, 
             180, 
             "CCS2 (منفذين)", 
@@ -353,9 +352,9 @@
             "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9"
         );
 
-        // 5. محطة Shell (الرستاق 2)
+        // 5. محطة Shell 
         addCharger(
-            "محطة Shell - الرستاق 2", 
+            "محطة Shell", 
             23.709153, 57.239824, 
             180, 
             "CCS2 (منفذين)", 
