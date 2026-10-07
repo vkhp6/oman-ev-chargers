@@ -271,6 +271,7 @@
             popupAnchor: [0, -30] 
         });
 
+        // دالة إضافة المحطة محسنة ومعدلة لتفتح التفاصيل وتغلقها بشكل متكرر دون مشاكل
         function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
@@ -304,6 +305,8 @@
                         </a>
                     </div>
                 `;
+                
+                marker.unbindPopup();
                 marker.bindPopup(popupContent).openPopup();
             });
         }
