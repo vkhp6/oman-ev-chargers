@@ -16,6 +16,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
+            overflow: hidden;
         }
 
         #map {
@@ -24,29 +25,59 @@
             z-index: 1;
         }
 
-        /* شريط العنوان */
-        .header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(18, 18, 18, 0.85);
-            padding: 10px 25px;
-            border-radius: 30px;
-            z-index: 1000;
-            border: 1px solid #00e5ff;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        /* شاشة الترحيب الاحترافية مع تأثير التغبيش (Blur) */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(18, 18, 18, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        /* محتوى شاشة الترحيب */
+        .splash-content {
             text-align: center;
+            animation: pulse-splash 2s infinite ease-in-out;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 18px;
+        .splash-icon {
+            font-size: 50px;
+            background: #121212;
+            border: 3px solid #ffaa00;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 0 25px rgba(255, 170, 0, 0.6);
+        }
+
+        .splash-content h1 {
+            font-size: 28px;
             color: #00e5ff;
-            white-space: nowrap;
+            margin: 0;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+            letter-spacing: 1px;
         }
 
-        /* زر العودة للموقع الحالي (عائم أسفل اليمين) */
+        @keyframes pulse-splash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* زر العودة للموقع الحالي */
         .locate-btn {
             position: absolute;
             bottom: 30px;
@@ -82,7 +113,7 @@
             backdrop-filter: blur(5px);
         }
 
-        /* تصميم النقطة الاحترافية لموقع المستخدم (رادار نبضي) */
+        /* تصميم النقطة الاحترافية لموقع المستخدم */
         .user-pulse-container {
             position: relative;
             width: 30px;
@@ -116,21 +147,19 @@
         }
 
         @keyframes radar-pulse {
-            0% {
-                transform: scale(0.5);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(2.5);
-                opacity: 0;
-            }
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>⚡ الشواحن السريعة في عُمان</h1>
+    <!-- شاشة الترحيب المغبشة (تختفي بعد ثانيتين) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-icon">⚡</div>
+            <h1>الشواحن السريعة في عُمان</h1>
+        </div>
     </div>
 
     <!-- زر لتوجيه الكاميرا لموقعك بضغطة واحدة -->
@@ -142,12 +171,19 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // 1. تهيئة الخريطة
+        // إخفاء شاشة الترحيب بسلاسة بعد ثانيتين
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 2000);
+        });
+
         var map = L.map('map', {
             zoomControl: false 
         }).setView([21.4735, 55.9754], 6);
 
-        // 2. طبقة خرائط القمر الصناعي
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri',
             maxZoom: 18
@@ -156,7 +192,6 @@
         var userLocation = null;
         var userMarker = null;
 
-        // تصميم أيقونة موقع المستخدم النبضية الاحترافية
         var userIcon = L.divIcon({
             html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
             className: '',
@@ -164,7 +199,6 @@
             iconAnchor: [15, 15]
         });
 
-        // دالة تحريك الكاميرا بسلاسة نحو موقع المستخدم
         function panToUser() {
             if (userLocation) {
                 map.flyTo(userLocation, 14, { animate: true, duration: 1.5 });
@@ -173,18 +207,15 @@
             }
         }
 
-        // 3. تفعيل جلب الموقع الحقيقي عبر GPS المتصفح
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;
                 userLocation = L.latLng(lat, lng);
 
-                // إضافة علامة الموقع النبضية
                 userMarker = L.marker(userLocation, {icon: userIcon}).addTo(map)
                     .bindPopup('<div dir="rtl" style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
 
-                // الطيران التلقائي لموقع المستخدم فور فتحه للموقع
                 map.flyTo(userLocation, 13, { animate: true, duration: 2 });
 
             }, function(error) {
@@ -192,7 +223,6 @@
             }, { enableHighAccuracy: true });
         }
 
-        // 4. تصميم أيقونة الشاحن السريع (⚡)
         var fastChargerIcon = L.divIcon({
             html: '<div style="font-size: 20px; background: #121212; border: 2px solid #ffaa00; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ffaa00;">⚡</div>',
             className: '',
@@ -201,7 +231,6 @@
             popupAnchor: [0, -30] 
         });
 
-        // 5. دالة إضافة المحطات وحساب المسافة بدقة
         function addCharger(name, lat, lng, power, plugType, status, description, gmapsLink) {
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
@@ -240,11 +269,7 @@
             });
         }
 
-        // ==========================================
-        // منطقة إضافة المحطات
-        // ==========================================
-
-        // 1. محطة EVO (نفط عُمان)
+        // محطة EVO (نفط عُمان)
         addCharger(
             "محطة EVO (نفط عُمان)", 
             23.622844, 58.507355, 
