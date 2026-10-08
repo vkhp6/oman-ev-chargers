@@ -223,13 +223,13 @@
             position: fixed;
             top: 0;
             right: -100%;
-            width: 80%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 320px;
             height: 100%;
             background: rgba(18, 18, 18, 0.98);
             z-index: 2000;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            transition: right 0.3s ease;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.7);
+            transition: right 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
             display: flex;
             flex-direction: column;
             border-left: 1px solid #333;
@@ -241,52 +241,127 @@
         }
 
         .sidebar-header {
-            padding: 12px;
-            border-bottom: 1px solid #333;
+            padding: 14px 16px;
+            border-bottom: 1px solid #2a2a2a;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(25, 25, 25, 0.95);
         }
 
         .sidebar-header h3 {
             margin: 0;
             color: #00e5ff;
             font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .close-sidebar {
-            background: none;
+            background: rgba(255, 255, 255, 0.08);
             border: none;
             color: #fff;
-            font-size: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 14px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-sidebar:hover {
+            background: rgba(255, 59, 48, 0.3);
+            color: #ff3b30;
         }
 
         .sidebar-list {
             overflow-y: auto;
-            padding: 10px;
+            padding: 12px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
+        /* تصميم كارد المحطة الراقي في القائمة */
         .sidebar-item {
-            background: #222;
-            border: 1px solid #444;
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 6px;
+            background: rgba(26, 26, 26, 0.9);
+            border: 1px solid #333;
+            padding: 10px 12px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-item:hover {
+            border-color: #00e5ff;
+            background: rgba(32, 32, 32, 0.95);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 229, 255, 0.1);
+        }
+
+        .sidebar-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            gap: 6px;
         }
 
         .sidebar-item-title {
             font-weight: bold;
             color: #00e5ff;
-            font-size: 13px;
-            margin-bottom: 2px;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .sidebar-item-badge {
+            background: rgba(255, 170, 0, 0.15);
+            color: #ffaa00;
+            border: 1px solid rgba(255, 170, 0, 0.4);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
         }
 
         .sidebar-item-desc {
             font-size: 10px;
-            color: #bbb;
+            color: #aaa;
+            line-height: 1.3;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .sidebar-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 5px;
+            font-size: 10px;
+        }
+
+        .sidebar-distance {
+            color: #00ffcc;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .sidebar-power-tag {
+            color: #ddd;
         }
 
         /* زر الموقع الحالي */
@@ -307,6 +382,11 @@
             cursor: pointer;
             z-index: 1000;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .locate-btn:active {
+            transform: scale(0.92);
         }
 
         /* النوافذ المنبثقة للخريطة */
@@ -441,7 +521,7 @@
     <!-- القائمة الجانبية للمحطات -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <h3>قائمة المحطات</h3>
+            <h3>⚡ دليل المحطات القريبة</h3>
             <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         </div>
         <div id="sidebar-list" class="sidebar-list"></div>
@@ -518,12 +598,17 @@
                 
                 map.flyTo(userLocation, 13, { animate: true, duration: 2 });
                 fetchWeather(lat, lng);
+                
+                // تحديث وترتيب القائمة فور توفر موقع المستخدم
+                populateSidebar();
 
             }, function() { 
                 document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
+                populateSidebar();
             }, { enableHighAccuracy: true });
         } else {
             document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
+            populateSidebar();
         }
 
         var fastChargerIcon = L.divIcon({
@@ -537,6 +622,9 @@
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
+            if(sidebar.classList.contains('open')) {
+                populateSidebar(); // تحديث وترتيب القائمة عند فتحها
+            }
         }
 
         function toggleFullscreen() {
@@ -557,7 +645,13 @@
         };
 
         function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
-            stationsData.push({name, lat, lng, power, plugType, description, gmapsLink});
+            // حساب المسافة المبدئية إن وجد موقع المستخدم
+            var distance = null;
+            if (userLocation) {
+                distance = userLocation.distanceTo([lat, lng]);
+            }
+
+            stationsData.push({name, lat, lng, power, plugType, description, gmapsLink, distance});
 
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
@@ -565,9 +659,9 @@
                 var distanceText = '<div style="color: #ff5555; font-size: 11px; margin-bottom: 6px;">📍 يرجى تفعيل الموقع لمعرفة المسافة</div>';
                 
                 if (userLocation) {
-                    var distanceInMeters = userLocation.distanceTo([lat, lng]);
-                    var distanceInKm = (distanceInMeters / 1000).toFixed(1); 
-                    distanceText = `<div style="color: #00e5ff; font-size: 12px; margin-bottom: 6px; font-weight: bold;">📍 يبعد عنك: ${distanceInKm} كم</div>`;
+                    var distMeters = userLocation.distanceTo([lat, lng]);
+                    var distKm = (distMeters / 1000).toFixed(1); 
+                    distanceText = `<div style="color: #00e5ff; font-size: 12px; margin-bottom: 6px; font-weight: bold;">📍 يبعد عنك: ${distKm} كم</div>`;
                 }
 
                 var popupContent = `
@@ -595,14 +689,42 @@
         function populateSidebar() {
             var listContainer = document.getElementById('sidebar-list');
             listContainer.innerHTML = '';
+
+            // حساب المسافات المحدثة وترتيب المحطات (الأقرب أولاً)
+            stationsData.forEach(function(station) {
+                if (userLocation) {
+                    station.distance = userLocation.distanceTo([station.lat, station.lng]);
+                } else {
+                    station.distance = Infinity;
+                }
+            });
+
+            stationsData.sort(function(a, b) {
+                return a.distance - b.distance;
+            });
             
             stationsData.forEach(function(station) {
                 var item = document.createElement('div');
                 item.className = 'sidebar-item';
+
+                var distanceDisplay = '<span style="color:#aaa; font-size:9px;">📍 فعل الموقع لمعرفة المسافة</span>';
+                if (userLocation && station.distance !== Infinity) {
+                    var km = (station.distance / 1000).toFixed(1);
+                    distanceDisplay = `📍 يبعد عنك ${km} كم`;
+                }
+
                 item.innerHTML = `
-                    <div class="sidebar-item-title">${station.name} (${station.power} kW)</div>
-                    <div class="sidebar-item-desc">${station.description.substring(0, 40)}...</div>
+                    <div class="sidebar-item-top">
+                        <div class="sidebar-item-title">${station.name}</div>
+                        <div class="sidebar-item-badge">${station.power} kW</div>
+                    </div>
+                    <div class="sidebar-item-desc">${station.description}</div>
+                    <div class="sidebar-item-footer">
+                        <span class="sidebar-distance">${distanceDisplay}</span>
+                        <span class="sidebar-power-tag">${station.plugType}</span>
+                    </div>
                 `;
+
                 item.onclick = function() {
                     map.flyTo([station.lat, station.lng], 15, { animate: true, duration: 1.5 });
                     toggleSidebar();
