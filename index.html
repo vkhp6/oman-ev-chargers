@@ -224,7 +224,7 @@
             top: 0;
             right: -100%;
             width: 85%;
-            max-width: 320px;
+            max-width: 330px;
             height: 100%;
             background: rgba(18, 18, 18, 0.98);
             z-index: 2000;
@@ -241,7 +241,7 @@
         }
 
         .sidebar-header {
-            padding: 14px 16px;
+            padding: 12px 16px;
             border-bottom: 1px solid #2a2a2a;
             display: flex;
             justify-content: space-between;
@@ -252,7 +252,7 @@
         .sidebar-header h3 {
             margin: 0;
             color: #00e5ff;
-            font-size: 15px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -262,10 +262,10 @@
             background: rgba(255, 255, 255, 0.08);
             border: none;
             color: #fff;
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -273,9 +273,85 @@
             transition: background 0.2s;
         }
 
+        /* 📊 صندوق الإحصائيات السريعة */
+        .sidebar-stats-box {
+            background: rgba(24, 24, 24, 0.95);
+            border-bottom: 1px solid #2a2a2a;
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            font-size: 10px;
+            color: #ccc;
+        }
+
+        .stat-item b {
+            color: #00e5ff;
+            display: block;
+            font-size: 12px;
+        }
+
+        /* 🎛️ فلتر الشركات المشغلة */
+        .sidebar-operators-filter {
+            padding: 8px 12px;
+            background: rgba(20, 20, 20, 0.95);
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+        }
+
+        .operator-tab {
+            background: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .operator-tab.active {
+            background: rgba(255, 170, 0, 0.15);
+            border-color: #ffaa00;
+            color: #ffaa00;
+        }
+
+        /* شريط فلتر الترتيب */
+        .sidebar-filters {
+            padding: 8px 12px;
+            background: rgba(22, 22, 22, 0.95);
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            gap: 6px;
+        }
+
+        .filter-tab {
+            flex: 1;
+            background: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 5px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background: rgba(0, 229, 255, 0.15);
+            border-color: #00e5ff;
+            color: #00e5ff;
+        }
+
         .sidebar-list {
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -484,7 +560,7 @@
         </div>
     </div>
 
-    <!-- الشريط العلوي المجمع (الطقس والأزرار في صف واحد) -->
+    <!-- الشريط العلوي المجمع -->
     <div class="top-bar">
         <div id="weather-widget" class="weather-widget">
             <span>🌤️ الطقس...</span>
@@ -502,6 +578,28 @@
             <h3>⚡ دليل المحطات القريبة</h3>
             <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         </div>
+
+        <!-- 📊 صندوق الإحصائيات السريعة -->
+        <div class="sidebar-stats-box">
+            <div class="stat-item">إجمالي المحطات <b id="stat-total">0</b></div>
+            <div class="stat-item">أعلى قدرة <b id="stat-max-power">0 kW</b></div>
+        </div>
+
+        <!-- 🎛️ فلتر الشركات المشغلة -->
+        <div class="sidebar-operators-filter">
+            <button id="op-all" class="operator-tab active" onclick="setOperatorFilter('all')">الكل</button>
+            <button id="op-evo" class="operator-tab" onclick="setOperatorFilter('EVO')">EVO</button>
+            <button id="op-shell" class="operator-tab" onclick="setOperatorFilter('Shell')">Shell</button>
+            <button id="op-nama" class="operator-tab" onclick="setOperatorFilter('نماء')">نماء</button>
+            <button id="op-others" class="operator-tab" onclick="setOperatorFilter('أخرى')">أخرى</button>
+        </div>
+
+        <!-- شريط فلتر الترتيب -->
+        <div class="sidebar-filters">
+            <button id="filter-distance" class="filter-tab active" onclick="setSortMode('distance')">📍 الأقرب أولاً</button>
+            <button id="filter-power" class="filter-tab" onclick="setSortMode('power')">⚡ الأعلى قدرة</button>
+        </div>
+
         <div id="sidebar-list" class="sidebar-list"></div>
     </div>
 
@@ -527,6 +625,7 @@
 
         var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
 
+        // استخدام طبقة صور الأقمار الصناعية المستقرة بدون حظر
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 18
         }).addTo(map);
@@ -534,6 +633,9 @@
         var userLocation = null;
         var userMarker = null;
         var stationsData = [];
+        var markersList = [];
+        var currentSortMode = 'distance';
+        var currentOperatorFilter = 'all';
 
         var userIcon = L.divIcon({
             html: '<div class="user-pulse-container"><div class="user-ring"></div><div class="user-dot"></div></div>',
@@ -565,28 +667,6 @@
             }
         }
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-                userLocation = L.latLng(lat, lng);
-                
-                userMarker = L.marker(userLocation, {icon: userIcon}).addTo(map)
-                    .bindPopup('<div style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
-                
-                map.flyTo(userLocation, 13, { animate: true, duration: 2 });
-                fetchWeather(lat, lng);
-                populateSidebar();
-
-            }, function() { 
-                document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
-                populateSidebar();
-            }, { enableHighAccuracy: true });
-        } else {
-            document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
-            populateSidebar();
-        }
-
         var fastChargerIcon = L.divIcon({
             html: '<div style="font-size: 16px; background: #121212; border: 2px solid #ffaa00; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ffaa00;">⚡</div>',
             className: '',
@@ -599,6 +679,7 @@
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
             if(sidebar.classList.contains('open')) {
+                updateSidebarStats();
                 populateSidebar();
             }
         }
@@ -620,13 +701,43 @@
             }
         };
 
+        function setSortMode(mode) {
+            currentSortMode = mode;
+            document.getElementById('filter-distance').classList.toggle('active', mode === 'distance');
+            document.getElementById('filter-power').classList.toggle('active', mode === 'power');
+            populateSidebar();
+        }
+
+        function setOperatorFilter(op) {
+            currentOperatorFilter = op;
+            ['all', 'evo', 'shell', 'nama', 'others'].forEach(id => {
+                var btn = document.getElementById('op-' + id);
+                if(btn) btn.classList.remove('active');
+            });
+            document.getElementById('op-' + (op === 'all' ? 'all' : (op === 'EVO' ? 'evo' : (op === 'Shell' ? 'shell' : (op === 'نماء' ? 'nama' : 'others'))))).classList.add('active');
+            
+            updateMapMarkersVisibility();
+            populateSidebar();
+        }
+
+        function updateSidebarStats() {
+            document.getElementById('stat-total').innerText = stationsData.length;
+            if(stationsData.length > 0) {
+                var maxP = Math.max(...stationsData.map(s => s.power));
+                document.getElementById('stat-max-power').innerText = maxP + ' kW';
+            }
+        }
+
         function addCharger(name, lat, lng, power, plugType, description, gmapsLink) {
             var distance = null;
             if (userLocation) {
                 distance = userLocation.distanceTo([lat, lng]);
             }
 
-            stationsData.push({name, lat, lng, power, plugType, description, gmapsLink, distance});
+            var operator = "أخرى";
+            if (name.includes("EVO")) operator = "EVO";
+            else if (name.includes("Shell")) operator = "Shell";
+            else if (name.includes("نماء")) operator = "نماء";
 
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
             
@@ -659,6 +770,19 @@
                 marker.unbindPopup();
                 marker.bindPopup(popupContent).openPopup();
             });
+
+            stationsData.push({name, lat, lng, power, plugType, description, gmapsLink, distance, operator, marker});
+            markersList.push({marker, operator});
+        }
+
+        function updateMapMarkersVisibility() {
+            markersList.forEach(item => {
+                if (currentOperatorFilter === 'all' || item.operator === currentOperatorFilter) {
+                    if (!map.hasLayer(item.marker)) item.marker.addTo(map);
+                } else {
+                    if (map.hasLayer(item.marker)) map.removeLayer(item.marker);
+                }
+            });
         }
 
         function populateSidebar() {
@@ -673,11 +797,21 @@
                 }
             });
 
-            stationsData.sort(function(a, b) {
-                return a.distance - b.distance;
+            var filteredStations = stationsData.filter(station => {
+                return currentOperatorFilter === 'all' || station.operator === currentOperatorFilter;
             });
+
+            if (currentSortMode === 'distance') {
+                filteredStations.sort(function(a, b) {
+                    return a.distance - b.distance;
+                });
+            } else if (currentSortMode === 'power') {
+                filteredStations.sort(function(a, b) {
+                    return b.power - a.power;
+                });
+            }
             
-            stationsData.forEach(function(station) {
+            filteredStations.forEach(function(station) {
                 var item = document.createElement('div');
                 item.className = 'sidebar-item';
 
@@ -710,6 +844,7 @@
         // ==========================================
         // إضافة المحطات
         // ==========================================
+        addCharger("محطة EVO نفط عمان (صلالة)", 17.049138, 54.165926, 180, "CCS2 (منفذين)", "محطة شحن سريعة لـ EVO في نفط عمان - صلالة.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO", 19.607458, 57.666430, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO", 19.949716, 56.249756, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO", 21.086094, 58.266414, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
@@ -732,7 +867,30 @@
         addCharger("محطة نماء للكهرباء", 24.344938, 56.729517, 180, "CCS2 (منفذين)", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة نماء للكهرباء", 23.584899, 58.324200, 180, "CCS2 (منفذين)", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
 
+        updateSidebarStats();
         populateSidebar();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                userLocation = L.latLng(lat, lng);
+                
+                userMarker = L.marker(userLocation, {icon: userIcon}).addTo(map)
+                    .bindPopup('<div style="text-align:center; color:#00e5ff; font-weight:bold;">📍 أنت هنا</div>');
+                
+                map.flyTo(userLocation, 13, { animate: true, duration: 2 });
+                fetchWeather(lat, lng);
+                populateSidebar();
+
+            }, function() { 
+                document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
+                populateSidebar();
+            }, { enableHighAccuracy: true });
+        } else {
+            document.getElementById('weather-widget').innerHTML = `<span>🌤️ عُمان</span>`;
+            populateSidebar();
+        }
     </script>
 </body>
 </html>
