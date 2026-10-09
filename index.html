@@ -529,17 +529,17 @@
         .action-row {
             display: flex;
             gap: 5px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .btn-link, .btn-share {
             flex: 1;
-            padding: 5px;
+            padding: 6px;
             text-align: center;
             text-decoration: none;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 11px;
             border: none;
             cursor: pointer;
         }
@@ -553,48 +553,6 @@
             background-color: #222;
             color: #00e5ff;
             border: 1px solid #00e5ff;
-        }
-
-        .status-row {
-            display: flex;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .btn-working {
-            flex: 1;
-            background-color: rgba(0, 255, 128, 0.15);
-            color: #00ff80;
-            border: 1px solid rgba(0, 255, 128, 0.4);
-            padding: 5px;
-            text-align: center;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 10px;
-            cursor: pointer;
-        }
-
-        .btn-broken {
-            flex: 1;
-            background-color: rgba(255, 85, 85, 0.15);
-            color: #ff5555;
-            border: 1px solid rgba(255, 85, 85, 0.4);
-            padding: 5px;
-            text-align: center;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 10px;
-            cursor: pointer;
-        }
-
-        .station-status-box {
-            background: rgba(30, 30, 30, 0.9);
-            border: 1px dashed #555;
-            padding: 6px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            font-size: 10px;
-            text-align: center;
         }
 
         .user-pulse-container {
@@ -724,38 +682,6 @@
         </div>
     </div>
 
-    <!-- نافذة تقييم المحطة ذات الخيارات المحددة -->
-    <div id="status-modal" class="custom-modal">
-        <div class="modal-content">
-            <h2>⚡ تقييم حالة المحطة</h2>
-            <div id="modal-station-name" style="font-size: 12px; color: #00e5ff; text-align: center; margin-bottom: 12px; font-weight: bold;"></div>
-            
-            <label class="modal-label">القدرة الفعلية (kW):</label>
-            <select id="select-power" class="modal-select">
-                <option value="40 kW">40 kW</option>
-                <option value="50 kW">50 kW</option>
-                <option value="60 kW">60 kW</option>
-                <option value="80 kW">80 kW</option>
-                <option value="90 kW">90 kW</option>
-                <option value="120 kW">120 kW</option>
-                <option value="150 kW">150 kW</option>
-                <option value="180 kW">180 kW</option>
-                <option value="200 kW">200 kW</option>
-            </select>
-
-            <label class="modal-label">وضع الشحن الحالي:</label>
-            <select id="select-sharing" class="modal-select">
-                <option value="يشحن لوحده بالكامل">يشحن لوحده بالكامل 🚗</option>
-                <option value="يوجد سيارة أخرى تشحن معه">يوجد سيارة أخرى تشحن معه 🚗🚗</option>
-            </select>
-
-            <div class="modal-buttons-row">
-                <button class="modal-submit-btn" onclick="submitStationStatus()">إرسال التحديث</button>
-                <button class="modal-cancel-btn" onclick="closeStatusModal()">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
     <!-- الشريط العلوي الاحترافي -->
     <div class="top-bar">
         <div id="weather-widget" class="weather-widget">
@@ -808,8 +734,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        var currentSelectedStation = "";
-
         function closeSplash() {
             var splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
@@ -839,16 +763,6 @@
         function toggleAddStationModal() {
             var modal = document.getElementById('add-station-modal');
             modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        function openStatusModal(name) {
-            currentSelectedStation = name;
-            document.getElementById('modal-station-name').innerText = name;
-            document.getElementById('status-modal').style.display = 'flex';
-        }
-
-        function closeStatusModal() {
-            document.getElementById('status-modal').style.display = 'none';
         }
 
         var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
@@ -976,85 +890,6 @@
             });
         };
 
-        window.sendBrokenStatus = function(name) {
-            var webhookUrl = "https://discord.com/api/webhooks/1557900242920275998/oIDcMfMVkYQl_1CNXirvPBDTlTnMLdu1Wsg90TKitJv13acLhcTrFw7KHIxmDpFMdTf6";
-            var statusText = "❌ المحطة لا تعمل / معطلة";
-            var timeString = new Date().toLocaleTimeString('ar-OM', { hour: '2-digit', minute: '2-digit' });
-
-            var reportData = { text: statusText, time: timeString, working: false };
-            localStorage.setItem("station_status_" + name, JSON.stringify(reportData));
-
-            var payload = {
-                embeds: [{
-                    title: "⚡ تحديث حالة محطة شحن",
-                    color: 15158332, 
-                    fields: [
-                        { name: "📍 اسم المحطة", value: name, inline: false },
-                        { name: "📊 الحالة المبلغ عنها", value: statusText, inline: false }
-                    ],
-                    footer: { text: "نظام بلاغات الشواحن - سلطنة عمان 🇴🇲" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                if (response.ok) {
-                    alert("شكراً لك! تم إبلاغ الإدارة أن المحطة لا تعمل.");
-                    if(window.activeMarker) window.activeMarker.fire('click');
-                } else {
-                    alert("حدث خطأ، يرجى المحاولة لاحقاً.");
-                }
-            }).catch(() => {
-                alert("تعذر الاتصال بالخادم.");
-            });
-        };
-
-        window.submitStationStatus = function() {
-            var name = currentSelectedStation;
-            var powerVal = document.getElementById('select-power').value;
-            var sharingVal = document.getElementById('select-sharing').value;
-            var webhookUrl = "https://discord.com/api/webhooks/1557900242920275998/oIDcMfMVkYQl_1CNXirvPBDTlTnMLdu1Wsg90TKitJv13acLhcTrFw7KHIxmDpFMdTf6";
-
-            var statusText = `✅ المحطة تعمل بكفاءة | القدرة: ${powerVal} | الوضع: ${sharingVal}`;
-            var timeString = new Date().toLocaleTimeString('ar-OM', { hour: '2-digit', minute: '2-digit' });
-
-            var reportData = { text: statusText, time: timeString, working: true };
-            localStorage.setItem("station_status_" + name, JSON.stringify(reportData));
-
-            var payload = {
-                embeds: [{
-                    title: "⚡ تحديث حالة محطة شحن",
-                    color: 3066993, 
-                    fields: [
-                        { name: "📍 اسم المحطة", value: name, inline: false },
-                        { name: "📊 الحالة المبلغ عنها", value: statusText, inline: false }
-                    ],
-                    footer: { text: "نظام بلاغات الشواحن - سلطنة عمان 🇴🇲" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                if (response.ok) {
-                    alert("شكراً لك! تم إرسال حالة عمل المحطة بنجاح.");
-                    closeStatusModal();
-                    if(window.activeMarker) window.activeMarker.fire('click');
-                } else {
-                    alert("حدث خطأ، يرجى المحاولة لاحقاً.");
-                }
-            }).catch(() => {
-                alert("تعذر الاتصال بالخادم.");
-            });
-        };
-
         function setSortMode(mode) {
             currentSortMode = mode;
             document.getElementById('filter-distance').classList.toggle('active', mode === 'distance');
@@ -1104,27 +939,11 @@
                     distanceText = `<div style="color: #00e5ff; font-size: 12px; margin-bottom: 6px; font-weight: bold;">📍 يبعد عنك: ${distKm} كم</div>`;
                 }
 
-                var savedReport = localStorage.getItem("station_status_" + name);
-                var statusBoxHtml = '<div class="station-status-box" style="color: #aaa;">ℹ️ لم يتم الإبلاغ عن حالة المحطة حديثاً</div>';
-                
-                if (savedReport) {
-                    var report = JSON.parse(savedReport);
-                    var statusColor = report.working ? "#00ff80" : "#ff5555";
-                    statusBoxHtml = `
-                        <div class="station-status-box" style="border-color: ${statusColor};">
-                            <span style="color: #ccc; font-size: 9px;">آخر بلاغ (${report.time}):</span><br>
-                            <strong style="color: ${statusColor}; font-size: 11px;">${report.text}</strong>
-                        </div>
-                    `;
-                }
-
                 var popupContent = `
                     <div dir="rtl" style="text-align: right; min-width: 195px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                         <div style="font-size: 14px; font-weight: bold; color: #00e5ff; margin-bottom: 3px;">${name}</div>
                         ${distanceText}
                         <div style="font-size: 11px; color: #dcdcdc; margin-bottom: 6px; line-height: 1.3;">${description}</div>
-                        
-                        ${statusBoxHtml}
 
                         <div style="margin-bottom: 5px; font-size: 11px;"><strong>المنفذ:</strong> ${plugType}</div>
                         
@@ -1135,10 +954,6 @@
                         <div class="action-row">
                             <button class="btn-share" onclick="shareStation('${name}', ${lat}, ${lng})">مشاركة 🔗</button>
                             <a href="${gmapsLink}" target="_blank" class="btn-link">انطلق 🚗</a>
-                        </div>
-                        <div class="status-row">
-                            <button class="btn-working" onclick="openStatusModal('${name}')">✅ تعمل</button>
-                            <button class="btn-broken" onclick="sendBrokenStatus('${name}')">❌ لا تعمل</button>
                         </div>
                     </div>
                 `;
