@@ -919,12 +919,13 @@
             }
         }
 
-        window.shareStation = function(name, link) {
+        window.shareStation = function(name, lat, lng) {
+            var gmapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
             if (navigator.share) {
-                navigator.share({ title: name, text: `شاهد محطة الشحن: ${name}`, url: link }).catch(() => {});
+                navigator.share({ title: name, text: `شاهد محطة الشحن: ${name}`, url: gmapsLink }).catch(() => {});
             } else {
-                navigator.clipboard.writeText(link);
-                alert("تم نسخ رابط المحطة للحافظة!");
+                navigator.clipboard.writeText(gmapsLink);
+                alert("تم نسخ رابط الموقع للحافظة!");
             }
         };
 
@@ -1089,7 +1090,7 @@
 
             var operator = "أخرى";
             if (name.includes("EVO")) operator = "EVO";
-            else if (name.includes("Shell")) operator = "Shell";
+            else if (name.includes("Shell") || name.includes("shell")) operator = "Shell";
             else if (name.includes("نماء")) operator = "نماء";
 
             var marker = L.marker([lat, lng], {icon: fastChargerIcon}).addTo(map);
@@ -1132,7 +1133,7 @@
                         </div>
 
                         <div class="action-row">
-                            <button class="btn-share" onclick="shareStation('${name}', '${gmapsLink}')">مشاركة 🔗</button>
+                            <button class="btn-share" onclick="shareStation('${name}', ${lat}, ${lng})">مشاركة 🔗</button>
                             <a href="${gmapsLink}" target="_blank" class="btn-link">انطلق 🚗</a>
                         </div>
                         <div class="status-row">
@@ -1219,31 +1220,32 @@
         }
 
         // ==========================================
-        // إضافة المحطات
+        // إضافة المحطات (بإحداثيات خطوط الطول والعرض الصحيحة لكل محطة)
         // ==========================================
-        addCharger("محطة EVO نفط عمان ( سكوير الخوض )", 23.585348, 58.147263, 50, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO نفط عمان (صلالة)", 17.049138, 54.165926, 180, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان - صلالة.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO", 19.607458, 57.666430, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO", 19.949716, 56.249756, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO", 21.086094, 58.266414, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO", 21.374521, 57.252945, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO نفط عمان (صور)", 22.592031, 59.479417, 180, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان - صور.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن J. A Cafe الجبل الاخضر", 23.076402, 57.669701, 40, "CCS2", "اوقات العمل: من 9 صباحا الى 9 مساءا. (ملاحظة: ربما توجد رسوم).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن فون الحاتم", 23.265246, 56.531723, 40, "CCS2", "شاحن فون الحاتم.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن ستي سنتر", 24.389039, 56.695759, 40, "CCS2", "شاحن ستي سنتر (القدرة غير مؤكدة).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO حي السرح", 23.412116, 57.352520, 180, "CCS2", "محطة شحن سريعة في حي السرح.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن بلدية مسقط (ممشى النهدي)", 23.632146, 58.094214, 80, "CCS2", "يقع في ممشى النهدي.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن بلدية مسقط", 23.599783, 58.431942, 80, "CCS2", "يوجد كوفي ومصلى ودورات مياة.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("شاحن جامعة الشرقية", 22.781539, 58.518933, 60, "CCS2", "متاح من 6 صباحا الى 9 مساءا. (تحذير: يطلب الاذن من الحارس).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO نفط عمان", 23.632180, 58.054017, 200, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO (نفط عُمان)", 23.622844, 58.507355, 180, "CCS2", "وجهة شحن متكاملة (تتضمن منفذين). تتوفر قهوة 55 Coffee ومرافق.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة Shell", 23.584534, 58.198266, 50, "CCS2", "محطة متكاملة تتضمن مقهى، سوبرماركت، ومصلى ودورات مياه.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة Shell", 23.711551, 57.241478, 180, "CCS2", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة Shell", 23.709153, 57.239824, 180, "CCS2", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة EVO", 24.414492, 56.599671, 120, "CCS2", "محطة شحن سريعة تتضمن مقهى وسوبرماركت.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة Shell", 24.501530, 56.504854, 180, "CCS2", "محطة شحن سريعة تتضمن سوبرماركت، مصلى ودورات مياه.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة نماء للكهرباء", 24.344938, 56.729517, 180, "CCS2", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
-        addCharger("محطة نماء للكهرباء", 23.584899, 58.324200, 180, "CCS2", "محطة شحن سريعة تابعة لنماء للكهرباء.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
+        addCharger("محطة EVO نفط عمان ( سكوير الخوض )", 23.585348, 58.147263, 50, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان.", "https://maps.app.goo.gl/Rp7LNt7TdA94CyFv9");
+        addCharger("محطة EVO نفط عمان (صلالة)", 17.049138, 54.165926, 180, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان - صلالة.", "https://maps.app.goo.gl/hRWyUSFoEpnTkjp48");
+        addCharger("محطة EVO", 19.607458, 57.666430, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "");
+        addCharger("محطة EVO (هيماء)", 19.949716, 56.249756, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/hRWyUSFoEpnTkjp48");
+        addCharger("محطة EVO (مديرة)", 21.086094, 58.266414, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/Rp7LNt7TdA94CyFv9");
+        addCharger("محطة EVO (غابة)", 21.374521, 57.252945, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/zinEi7qmC1eMNUJKA");
+        addCharger("محطة EVO نفط عمان (صور)", 22.592031, 59.479417, 180, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان - صور.", "https://maps.app.goo.gl/Ve1LLDwRHcTUKqTNA");
+        addCharger("شاحن J. A Cafe الجبل الاخضر", 23.076402, 57.669701, 40, "CCS2", "اوقات العمل: من 9 صباحا الى 9 مساءا. (ملاحظة: ربما توجد رسوم).", "https://maps.app.goo.gl/A8NaYN7ZqJUj2qA77");
+        addCharger("شاحن فون الحاتم", 23.265246, 56.531723, 40, "CCS2", "شاحن فون الحاتم.", "https://maps.app.goo.gl/nTztpiqUfhwFQvXa6");
+        addCharger("شاحن ستي سنتر (صحار)", 24.389039, 56.695759, 40, "CCS2", "شاحن ستي سنتر (القدرة غير مؤكدة).", "https://maps.app.goo.gl/yKkrWMtVFFU5ztH79");
+        addCharger("محطة EVO حي السرح", 23.412116, 57.352520, 180, "CCS2", "محطة شحن سريعة في حي السرح.", "https://maps.app.goo.gl/Vvsj2y7Xsh3yddJYA");
+        addCharger("شاحن بلدية مسقط (ممشى النهدي)", 23.632146, 58.094214, 80, "CCS2", "يقع في ممشى النهدي.", "https://maps.app.goo.gl/Myi2LAR2PKTPVXP39");
+        addCharger("شاحن بلدية مسقط (سارية العلم)", 23.599783, 58.431942, 80, "CCS2", "يوجد كوفي ومصلى ودورات مياة.", "https://maps.app.goo.gl/Wr88zsHqVZq9vQG26");
+        addCharger("شاحن جامعة الشرقية", 22.781539, 58.518933, 60, "CCS2", "متاح من 6 صباحا الى 9 مساءا. (تحذير: يطلب الاذن من الحارس).", "https://maps.app.goo.gl/AEpxU3nqYXAvj9Ue7");
+        addCharger("محطة EVO نفط عمان (حلبان)", 23.632180, 58.054017, 200, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان.", "https://maps.app.goo.gl/224EvS1jeDMrsV5B7");
+        addCharger("محطة EVO (نفط عُمان) ( القرم )", 23.622844, 58.507355, 180, "CCS2", "وجهة شحن متكاملة (تتضمن منفذين). تتوفر قهوة 55 Coffee ومرافق.", "https://maps.app.goo.gl/7BpJJ3AmgVqyQMYC6");
+        addCharger("محطة shell (البندر)", 23.584534, 58.198266, 50, "CCS2", "محطة متكاملة تتضمن مقهى، سوبرماركت، ومصلى ودورات مياه.", "https://maps.app.goo.gl/En95XqpxnfBgtRRc7");
+        addCharger("محطة Shell (السويق 1)", 23.711551, 57.241478, 180, "CCS2", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/a74BDHH4xaP4qno27");
+        addCharger("محطة Shell (السويق 2)", 23.709153, 57.239824, 180, "CCS2", "محطة شحن سريعة متكاملة (مصلى، مقهى، وسوبرماركت).", "https://maps.app.goo.gl/veLtSMYFudSGfDXr5");
+        addCharger("محطة EVO (فلج القبائل)", 24.414492, 56.599671, 120, "CCS2", "محطة شحن سريعة تتضمن مقهى وسوبرماركت.", "https://maps.app.goo.gl/xGpS7CCJi2yvCvha7");
+        addCharger("محطة Shell ( لوى )", 24.501530, 56.504854, 180, "CCS2", "محطة شحن سريعة تتضمن سوبرماركت، مصلى ودورات مياه.", "https://maps.app.goo.gl/Z6oJxTT4z4iLwfLk9");
+        addCharger("محطة نماء مسقط", 23.584899, 58.324200, 180, "CCS2", "محطة شحن سريعة تابعة لنماء للكهرباء في مسقط.", "https://maps.app.goo.gl/ZjfYKyDWHpFwcz3n6");
+        addCharger("محطة نماء صحار", 24.344945, 56.729530, 180, "CCS2", "محطة شحن سريعة تابعة لنماء للكهرباء في صحار.", "https://maps.app.goo.gl/SPGcksGr23eXBm2g7");
+        addCharger("shell ( صحم )", 24.004486, 56.795861, 180, "CCS2", "محطة شحن سريعة تابعة لـ Shell في صحم.", "https://maps.app.goo.gl/eWyh5NLrW4gTVvhXA");
 
         updateSidebarStats();
         populateSidebar();
