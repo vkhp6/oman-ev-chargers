@@ -156,21 +156,33 @@
             white-space: nowrap;
         }
 
-        /* نافذة التعرفة الرسمية */
+        .control-btn.add-station {
+            border-color: #00ff80;
+            color: #00ff80;
+            box-shadow: 0 0 8px rgba(0, 255, 128, 0.3);
+        }
+
+        .control-btn.badge-btn {
+            border-color: #ffaa00;
+            color: #ffaa00;
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.3);
+        }
+
+        /* النوافذ المنبثقة */
         .custom-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 15px;
             box-sizing: border-box;
         }
 
@@ -179,12 +191,14 @@
             border: 2px solid #ffaa00;
             border-radius: 16px;
             width: 100%;
-            max-width: 350px;
-            padding: 14px;
+            max-width: 330px;
+            padding: 16px;
             text-align: right;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
             position: relative;
             box-sizing: border-box;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-content h2 {
@@ -192,7 +206,59 @@
             margin-top: 0;
             font-size: 15px;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .modal-label {
+            font-size: 11px;
+            color: #00e5ff;
+            margin-bottom: 4px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .modal-select, .modal-input {
+            width: 100%;
+            background: #181818;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            margin-bottom: 10px;
+            outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .modal-buttons-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .modal-submit-btn {
+            flex: 1;
+            background-color: #00ff80;
+            color: #121212;
+            border: none;
+            padding: 8px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .modal-cancel-btn {
+            flex: 1;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
         }
 
         .tariff-item {
@@ -216,6 +282,44 @@
             cursor: pointer;
             margin-top: 8px;
             font-size: 12px;
+        }
+
+        /* تنسيق لوحة الشرف */
+        .badge-card {
+            background: #151515;
+            border: 1px solid #ffaa00;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .badge-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .badge-title {
+            color: #ffaa00;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .badge-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #ccc;
+            border-top: 1px solid #222;
+            padding-top: 8px;
+        }
+
+        .badge-stats b {
+            color: #00e5ff;
+            display: block;
+            font-size: 13px;
         }
 
         /* القائمة الجانبية للمحطات */
@@ -270,10 +374,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
         }
 
-        /* 📊 صندوق الإحصائيات السريعة */
         .sidebar-stats-box {
             background: rgba(24, 24, 24, 0.95);
             border-bottom: 1px solid #2a2a2a;
@@ -291,7 +393,6 @@
             font-size: 12px;
         }
 
-        /* 🎛️ فلتر الشركات المشغلة */
         .sidebar-operators-filter {
             padding: 8px 12px;
             background: rgba(20, 20, 20, 0.95);
@@ -320,7 +421,6 @@
             color: #ffaa00;
         }
 
-        /* شريط فلتر الترتيب */
         .sidebar-filters {
             padding: 8px 12px;
             background: rgba(22, 22, 22, 0.95);
@@ -340,7 +440,6 @@
             font-weight: bold;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
         }
 
         .filter-tab.active {
@@ -358,14 +457,12 @@
             gap: 8px;
         }
 
-        /* تصميم كارد المحطة في القائمة */
         .sidebar-item {
             background: rgba(26, 26, 26, 0.9);
             border: 1px solid #333;
             padding: 10px 12px;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .sidebar-item-top {
@@ -423,7 +520,6 @@
             color: #ddd;
         }
 
-        /* زر الموقع الحالي */
         .locate-btn {
             position: absolute;
             bottom: 20px;
@@ -443,7 +539,6 @@
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
         }
 
-        /* النوافذ المنبثقة للخريطة */
         .leaflet-popup-content-wrapper, .leaflet-popup-tip {
             background-color: #1c1c1c !important;
             color: #fff !important;
@@ -464,7 +559,7 @@
             text-decoration: none;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
             border: none;
             cursor: pointer;
         }
@@ -480,7 +575,48 @@
             border: 1px solid #00e5ff;
         }
 
-        /* نقطة موقع المستخدم */
+        .status-row {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-working {
+            flex: 1;
+            background-color: rgba(0, 255, 128, 0.15);
+            color: #00ff80;
+            border: 1px solid rgba(0, 255, 128, 0.4);
+            padding: 5px;
+            text-align: center;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .btn-broken {
+            flex: 1;
+            background-color: rgba(255, 85, 85, 0.15);
+            color: #ff5555;
+            border: 1px solid rgba(255, 85, 85, 0.4);
+            padding: 5px;
+            text-align: center;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .station-status-box {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px dashed #555;
+            padding: 6px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 10px;
+            text-align: center;
+        }
+
         .user-pulse-container {
             position: relative;
             width: 26px;
@@ -560,12 +696,97 @@
         </div>
     </div>
 
+    <!-- نافذة طلب إضافة محطة جديدة -->
+    <div id="add-station-modal" class="custom-modal">
+        <div class="modal-content">
+            <h2>➕ طلب إضافة محطة جديدة</h2>
+            
+            <label class="modal-label">اسم المحطة أو الموقع:</label>
+            <input type="text" id="new-station-name" class="modal-input" placeholder="مثال: محطة شحن بركاء">
+
+            <label class="modal-label">رابط خرائط جوجل (Google Maps):</label>
+            <input type="text" id="new-station-link" class="modal-input" placeholder="الصق الرابط هنا...">
+
+            <label class="modal-label">القدرة التقريبية (kW):</label>
+            <input type="text" id="new-station-power" class="modal-input" placeholder="مثال: 120 kW أو 50 kW">
+
+            <label class="modal-label">نوع المنفذ:</label>
+            <select id="new-station-plug" class="modal-select">
+                <option value="CCS2">CCS2</option>
+                <option value="Type 2">Type 2</option>
+                <option value="CHAdeMO">CHAdeMO</option>
+            </select>
+
+            <label class="modal-label">ملاحظات / وصف إضافي:</label>
+            <input type="text" id="new-station-desc" class="modal-input" placeholder="مثال: توجد بجانب السوبرماركت">
+
+            <div class="modal-buttons-row">
+                <button class="modal-submit-btn" onclick="submitNewStationRequest()">إرسال الطلب</button>
+                <button class="modal-cancel-btn" onclick="toggleAddStationModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة لوحة شرف المساهمين المجتمعية -->
+    <div id="badge-modal" class="custom-modal">
+        <div class="modal-content">
+            <h2>🏆 لوحة شرف المساهمين</h2>
+            <div class="badge-card">
+                <div id="user-badge-icon" class="badge-icon">🌱</div>
+                <div id="user-badge-title" class="badge-title">مساهم مبتدئ</div>
+                <div style="font-size: 10px; color: #888;">شكراً لمساهمتك في تطوير خريطة شواحن عُمان!</div>
+                <div class="badge-stats">
+                    <div>نقاط المساهمة <b id="user-points">0</b></div>
+                    <div>إجمالي البلاغات <b id="user-reports-count">0</b></div>
+                </div>
+            </div>
+            <div style="font-size: 10px; color: #aaa; text-align: center; margin-bottom: 10px; line-height: 1.4;">
+                • تزيد نقاطك تلقائياً عند الإبلاغ عن أعطال المحطات أو طلب إضافة محطات جديدة.
+            </div>
+            <button class="modal-btn" onclick="toggleBadgeModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة تقييم المحطة ذات الخيارات المحددة -->
+    <div id="status-modal" class="custom-modal">
+        <div class="modal-content">
+            <h2>⚡ تقييم حالة المحطة</h2>
+            <div id="modal-station-name" style="font-size: 12px; color: #00e5ff; text-align: center; margin-bottom: 12px; font-weight: bold;"></div>
+            
+            <label class="modal-label">القدرة الفعلية (kW):</label>
+            <select id="select-power" class="modal-select">
+                <option value="40 kW">40 kW</option>
+                <option value="50 kW">50 kW</option>
+                <option value="60 kW">60 kW</option>
+                <option value="80 kW">80 kW</option>
+                <option value="90 kW">90 kW</option>
+                <option value="120 kW">120 kW</option>
+                <option value="150 kW">150 kW</option>
+                <option value="180 kW">180 kW</option>
+                <option value="200 kW">200 kW</option>
+            </select>
+
+            <label class="modal-label">وضع الشحن الحالي:</label>
+            <select id="select-sharing" class="modal-select">
+                <option value="يشحن لوحده بالكامل">يشحن لوحده بالكامل 🚗</option>
+                <option value="يوجد سيارة أخرى تشحن معه">يوجد سيارة أخرى تشحن معه 🚗🚗</option>
+            </select>
+
+            <div class="modal-buttons-row">
+                <button class="modal-submit-btn" onclick="submitStationStatus()">إرسال التحديث</button>
+                <button class="modal-cancel-btn" onclick="closeStatusModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <!-- الشريط العلوي المجمع -->
     <div class="top-bar">
         <div id="weather-widget" class="weather-widget">
             <span>🌤️ الطقس...</span>
         </div>
         <div class="top-controls">
+            <button class="control-btn badge-btn" onclick="toggleBadgeModal()">🏆 لوحة الشرف</button>
+            <button class="control-btn add-station" onclick="toggleAddStationModal()">➕ أضف</button>
             <button class="control-btn" onclick="toggleTariffModal()">💰 التعرفة</button>
             <button class="control-btn" onclick="toggleSidebar()">📋 المحطات</button>
             <button class="control-btn" onclick="toggleFullscreen()">⛶ الشاشة</button>
@@ -579,13 +800,12 @@
             <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         </div>
 
-        <!-- 📊 صندوق الإحصائيات السريعة -->
         <div class="sidebar-stats-box">
             <div class="stat-item">إجمالي المحطات <b id="stat-total">0</b></div>
             <div class="stat-item">أعلى قدرة <b id="stat-max-power">0 kW</b></div>
         </div>
 
-        <!-- 🎛️ فلتر الشركات المشغلة -->
+        <!-- فلتر الشركات المشغلة -->
         <div class="sidebar-operators-filter">
             <button id="op-all" class="operator-tab active" onclick="setOperatorFilter('all')">الكل</button>
             <button id="op-evo" class="operator-tab" onclick="setOperatorFilter('EVO')">EVO</button>
@@ -612,6 +832,54 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        var currentSelectedStation = "";
+
+        // إدارة نقاط المساهمين المجتمعية
+        function getContributorData() {
+            var data = localStorage.getItem("contributor_stats");
+            if (!data) {
+                return { points: 0, reports: 0 };
+            }
+            return JSON.parse(data);
+        }
+
+        function addContributionPoints(pts) {
+            var data = getContributorData();
+            data.points += pts;
+            data.reports += 1;
+            localStorage.setItem("contributor_stats", JSON.stringify(data));
+        }
+
+        function updateBadgeModalUI() {
+            var data = getContributorData();
+            document.getElementById('user-points').innerText = data.points;
+            document.getElementById('user-reports-count').innerText = data.reports;
+
+            var iconEl = document.getElementById('user-badge-icon');
+            var titleEl = document.getElementById('user-badge-title');
+
+            if (data.points >= 30) {
+                iconEl.innerText = "👑";
+                titleEl.innerText = "بطل المجتمع الذهبي";
+            } else if (data.points >= 15) {
+                iconEl.innerText = "🥈";
+                titleEl.innerText = "مساهم نشط ومتألق";
+            } else {
+                iconEl.innerText = "🌱";
+                titleEl.innerText = "مساهم مبتدئ";
+            }
+        }
+
+        function toggleBadgeModal() {
+            var modal = document.getElementById('badge-modal');
+            if (modal.style.display !== 'flex') {
+                updateBadgeModalUI();
+                modal.style.display = 'flex';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
         function closeSplash() {
             var splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
@@ -623,9 +891,23 @@
             modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
         }
 
+        function toggleAddStationModal() {
+            var modal = document.getElementById('add-station-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function openStatusModal(name) {
+            currentSelectedStation = name;
+            document.getElementById('modal-station-name').innerText = name;
+            document.getElementById('status-modal').style.display = 'flex';
+        }
+
+        function closeStatusModal() {
+            document.getElementById('status-modal').style.display = 'none';
+        }
+
         var map = L.map('map', { zoomControl: false }).setView([21.4735, 55.9754], 6);
 
-        // استخدام طبقة صور الأقمار الصناعية المستقرة بدون حظر
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 18
         }).addTo(map);
@@ -701,6 +983,135 @@
             }
         };
 
+        window.submitNewStationRequest = function() {
+            var name = document.getElementById('new-station-name').value.trim();
+            var link = document.getElementById('new-station-link').value.trim();
+            var power = document.getElementById('new-station-power').value.trim();
+            var plug = document.getElementById('new-station-plug').value;
+            var desc = document.getElementById('new-station-desc').value.trim();
+
+            if (!name || !link) {
+                alert("يرجى إدخال اسم المحطة ورابط خرائط جوجل على الأقل.");
+                return;
+            }
+
+            var webhookUrl = "https://discord.com/api/webhooks/1557900242920275998/oIDcMfMVkYQl_1CNXirvPBDTlTnMLdu1Wsg90TKitJv13acLhcTrFw7KHIxmDpFMdTf6";
+            var detailsText = `📍 الاسم: ${name}\n🔗 الرابط: ${link}\n⚡ القدرة: ${power || 'غير متوفر'}\n🔌 المنفذ: ${plug}\n📝 الوصف: ${desc || 'لا توجد ملاحظات'}`;
+
+            var payload = {
+                embeds: [{
+                    title: "➕ طلب إضافة محطة شحن جديدة",
+                    color: 3447003, 
+                    fields: [
+                        { name: "📋 تفاصيل المحطة الجديدة", value: detailsText, inline: false }
+                    ],
+                    footer: { text: "نظام بلاغات الشواحن - سلطنة عمان 🇴🇲" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (response.ok) {
+                    addContributionPoints(15);
+                    alert("شكراً لك! تم إرسال طلب إضافة المحطة للإدارة بنجاح (تم منحك 15 نقطة في لوحة الشرف 🏆).");
+                    document.getElementById('new-station-name').value = '';
+                    document.getElementById('new-station-link').value = '';
+                    document.getElementById('new-station-power').value = '';
+                    document.getElementById('new-station-desc').value = '';
+                    toggleAddStationModal();
+                } else {
+                    alert("حدث خطأ، يرجى المحاولة لاحقاً.");
+                }
+            }).catch(() => {
+                alert("تعذر الاتصال بالخادم.");
+            });
+        };
+
+        window.sendBrokenStatus = function(name) {
+            var webhookUrl = "https://discord.com/api/webhooks/1557900242920275998/oIDcMfMVkYQl_1CNXirvPBDTlTnMLdu1Wsg90TKitJv13acLhcTrFw7KHIxmDpFMdTf6";
+            var statusText = "❌ المحطة لا تعمل / معطلة";
+            var timeString = new Date().toLocaleTimeString('ar-OM', { hour: '2-digit', minute: '2-digit' });
+
+            var reportData = { text: statusText, time: timeString, working: false };
+            localStorage.setItem("station_status_" + name, JSON.stringify(reportData));
+
+            var payload = {
+                embeds: [{
+                    title: "⚡ تحديث حالة محطة شحن",
+                    color: 15158332, 
+                    fields: [
+                        { name: "📍 اسم المحطة", value: name, inline: false },
+                        { name: "📊 الحالة المبلغ عنها", value: statusText, inline: false }
+                    ],
+                    footer: { text: "نظام بلاغات الشواحن - سلطنة عمان 🇴🇲" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (response.ok) {
+                    addContributionPoints(5);
+                    alert("شكراً لك! تم إبلاغ الإدارة أن المحطة لا تعمل (تم منحك 5 نقاط 🏆).");
+                    if(window.activeMarker) window.activeMarker.fire('click');
+                } else {
+                    alert("حدث خطأ، يرجى المحاولة لاحقاً.");
+                }
+            }).catch(() => {
+                alert("تعذر الاتصال بالخادم.");
+            });
+        };
+
+        window.submitStationStatus = function() {
+            var name = currentSelectedStation;
+            var powerVal = document.getElementById('select-power').value;
+            var sharingVal = document.getElementById('select-sharing').value;
+            var webhookUrl = "https://discord.com/api/webhooks/1557900242920275998/oIDcMfMVkYQl_1CNXirvPBDTlTnMLdu1Wsg90TKitJv13acLhcTrFw7KHIxmDpFMdTf6";
+
+            var statusText = `✅ المحطة تعمل بكفاءة | القدرة: ${powerVal} | الوضع: ${sharingVal}`;
+            var timeString = new Date().toLocaleTimeString('ar-OM', { hour: '2-digit', minute: '2-digit' });
+
+            var reportData = { text: statusText, time: timeString, working: true };
+            localStorage.setItem("station_status_" + name, JSON.stringify(reportData));
+
+            var payload = {
+                embeds: [{
+                    title: "⚡ تحديث حالة محطة شحن",
+                    color: 3066993, 
+                    fields: [
+                        { name: "📍 اسم المحطة", value: name, inline: false },
+                        { name: "📊 الحالة المبلغ عنها", value: statusText, inline: false }
+                    ],
+                    footer: { text: "نظام بلاغات الشواحن - سلطنة عمان 🇴🇲" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (response.ok) {
+                    addContributionPoints(10);
+                    alert("شكراً لك! تم إرسال حالة عمل المحطة بنجاح (تم منحك 10 نقاط 🏆).");
+                    closeStatusModal();
+                    if(window.activeMarker) window.activeMarker.fire('click');
+                } else {
+                    alert("حدث خطأ، يرجى المحاولة لاحقاً.");
+                }
+            }).catch(() => {
+                alert("تعذر الاتصال بالخادم.");
+            });
+        };
+
         function setSortMode(mode) {
             currentSortMode = mode;
             document.getElementById('filter-distance').classList.toggle('active', mode === 'distance');
@@ -750,11 +1161,28 @@
                     distanceText = `<div style="color: #00e5ff; font-size: 12px; margin-bottom: 6px; font-weight: bold;">📍 يبعد عنك: ${distKm} كم</div>`;
                 }
 
+                var savedReport = localStorage.getItem("station_status_" + name);
+                var statusBoxHtml = '<div class="station-status-box" style="color: #aaa;">ℹ️ لم يتم الإبلاغ عن حالة المحطة حديثاً</div>';
+                
+                if (savedReport) {
+                    var report = JSON.parse(savedReport);
+                    var statusColor = report.working ? "#00ff80" : "#ff5555";
+                    statusBoxHtml = `
+                        <div class="station-status-box" style="border-color: ${statusColor};">
+                            <span style="color: #ccc; font-size: 9px;">آخر بلاغ (${report.time}):</span><br>
+                            <strong style="color: ${statusColor}; font-size: 11px;">${report.text}</strong>
+                        </div>
+                    `;
+                }
+
                 var popupContent = `
-                    <div dir="rtl" style="text-align: right; min-width: 190px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <div dir="rtl" style="text-align: right; min-width: 195px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                         <div style="font-size: 14px; font-weight: bold; color: #00e5ff; margin-bottom: 3px;">${name}</div>
                         ${distanceText}
                         <div style="font-size: 11px; color: #dcdcdc; margin-bottom: 6px; line-height: 1.3;">${description}</div>
+                        
+                        ${statusBoxHtml}
+
                         <div style="margin-bottom: 5px; font-size: 11px;"><strong>المنفذ:</strong> ${plugType}</div>
                         
                         <div style="display: inline-block; background: #ffaa00; color: #000; padding: 2px 6px; border-radius: 5px; font-weight: bold; font-size: 11px; margin-bottom: 4px;">
@@ -765,8 +1193,15 @@
                             <button class="btn-share" onclick="shareStation('${name}', '${gmapsLink}')">مشاركة 🔗</button>
                             <a href="${gmapsLink}" target="_blank" class="btn-link">انطلق 🚗</a>
                         </div>
+                        <div class="status-row">
+                            <button class="btn-working" onclick="openStatusModal('${name}')">✅ تعمل</button>
+                            <button class="btn-broken" onclick="sendBrokenStatus('${name}')">❌ لا تعمل</button>
+                        </div>
                     </div>
                 `;
+
+                window.activeMarker = marker;
+
                 marker.unbindPopup();
                 marker.bindPopup(popupContent).openPopup();
             });
@@ -844,6 +1279,7 @@
         // ==========================================
         // إضافة المحطات
         // ==========================================
+        addCharger("محطة EVO نفط عمان ( سكوير الخوض )", 23.585348, 58.147263, 50, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO نفط عمان (صلالة)", 17.049138, 54.165926, 180, "CCS2", "محطة شحن سريعة لـ EVO في نفط عمان - صلالة.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO", 19.607458, 57.666430, 180, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
         addCharger("محطة EVO", 19.949716, 56.249756, 120, "CCS2", "محطة شحن سريعة لـ EVO.", "https://maps.app.goo.gl/qRjrsLPuc35uNHUy9");
